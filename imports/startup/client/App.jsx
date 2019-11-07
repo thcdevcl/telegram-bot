@@ -1,3 +1,10 @@
-import React from "react";
+import React, { createContext } from "react";
 
-export default () => <h1>elevenbot</h1>;
+const GlobalContext = createContext();
+
+export const GlobalContextProvider = GlobalContext.Provider;
+export const GlobalContextConsumer = GlobalContext.Consumer;
+
+import Router from "../../ui/components/router";
+
+export default () => <Router />;

@@ -1,1 +1,12 @@
-{}
+{
+  "public": {
+    "app": {
+      "NAME_SHORT": "11Bot"
+    },
+    "router": {
+      "index": {
+        "PATH": "/"
+      }
+    }
+  }
+}
