@@ -5,6 +5,10 @@ import { ApolloProvider } from "react-apollo";
 import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { MeteorAccountsLink } from "meteor/apollo";
+import { MuiThemeProvider } from "@material-ui/core/styles";
+import { HelmetProvider } from "react-helmet-async";
+
+import theme from "../../assets/theme";
 
 const GlobalContext = createContext();
 
@@ -25,6 +29,10 @@ const client = new ApolloClient({
 
 export default () => (
   <ApolloProvider client={client}>
-    <Router />
+    <MuiThemeProvider theme={theme}>
+      <HelmetProvider>
+        <Router />
+      </HelmetProvider>
+    </MuiThemeProvider>
   </ApolloProvider>
 );
