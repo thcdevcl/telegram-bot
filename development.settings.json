@@ -17,6 +17,12 @@
       },
       "not_found": {
         "TITLE": "404"
+      },
+      "sign_in": {
+        "PATH": "/signin",
+        "TITLE": "Sign In",
+        "NAME": "signin-page",
+        "CONTENT": "signin-page"
       }
     }
   }
