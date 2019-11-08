@@ -7,7 +7,9 @@ import { GlobalContextProvider } from "../../../startup/client/App";
 
 import PublicRoute from "./PublicRoute";
 
+import Home from "../../pages/HomePage";
 import Index from "../../pages/IndexPage";
+import NotFound from "../../pages/NotFoundPage";
 
 import Spinner from "../utils/Spinner";
 import ScrollTop from "../utils/ScrollTop";
@@ -38,6 +40,7 @@ function Router({ loading, currentUser }) {
                 name={Meteor.settings.public.router.index.NAME}
               />
             )}
+            <Route component={NotFound} />
           </Switch>
         </ScrollTop>
       </GlobalContextProvider>
