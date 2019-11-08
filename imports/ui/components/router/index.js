@@ -5,6 +5,8 @@ import { graphql } from "react-apollo";
 
 import { GlobalContextProvider } from "../../../startup/client/App";
 
+import PublicRoute from "./PublicRoute";
+
 import Index from "../../pages/IndexPage";
 
 import Spinner from "../utils/Spinner";
@@ -17,11 +19,25 @@ function Router({ loading, currentUser }) {
       <GlobalContextProvider value={{ currentUser }}>
         <ScrollTop>
           <Switch>
-            <Route
-              exact
-              path={Meteor.settings.public.router.index.PATH}
-              component={Index}
-            />
+            {currentUser ? (
+              <PrivateRoute
+                exact
+                component={Home}
+                path={Meteor.settings.public.router.index.PATH}
+                title={Meteor.settings.public.router.index.home.TITLE}
+                content={Meteor.settings.public.router.index.home.CONTENT}
+                name={Meteor.settings.public.router.index.home.NAME}
+              />
+            ) : (
+              <PublicRoute
+                exact
+                component={Index}
+                path={Meteor.settings.public.router.index.PATH}
+                title={Meteor.settings.public.router.index.TITLE}
+                content={Meteor.settings.public.router.index.CONTENT}
+                name={Meteor.settings.public.router.index.NAME}
+              />
+            )}
           </Switch>
         </ScrollTop>
       </GlobalContextProvider>

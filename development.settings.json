@@ -5,7 +5,15 @@
     },
     "router": {
       "index": {
-        "PATH": "/"
+        "PATH": "/",
+        "home": {
+          "TITLE": "Home",
+          "NAME": "home-page",
+          "CONTENT": "dashboard"
+        },
+        "TITLE": "Index",
+        "NAME": "index-page",
+        "CONTENT": "landing-page"
       }
     }
   }
