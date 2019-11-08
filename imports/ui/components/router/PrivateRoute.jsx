@@ -2,7 +2,7 @@ import React from "react";
 import { PropTypes } from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 
-import { GloblaContextConsumer } from "../../../startup/client/App";
+import { GlobalContextConsumer } from "../../../startup/client/App";
 import { withStyles } from "@material-ui/styles";
 
 import Helmet from "../utils/Helmet";
@@ -46,7 +46,7 @@ function PrivateRoute({
 }) {
   if (!Meteor.userId()) return <Redirect to="/" />;
   return (
-    <AppContextConsumer>
+    <GlobalContextConsumer>
       {context => {
         if (!context.currentUser) return <Redirect to="/" />;
         return (
@@ -64,7 +64,7 @@ function PrivateRoute({
           />
         );
       }}
-    </AppContextConsumer>
+    </GlobalContextConsumer>
   );
 }
 

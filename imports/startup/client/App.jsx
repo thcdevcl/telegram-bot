@@ -1,4 +1,5 @@
 import React, { createContext } from "react";
+import ReactNotification from "react-notifications-component";
 import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
 import { ApolloProvider } from "react-apollo";
@@ -7,6 +8,8 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { MeteorAccountsLink } from "meteor/apollo";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { HelmetProvider } from "react-helmet-async";
+
+import "react-notifications-component/dist/theme.css";
 
 import theme from "../../assets/theme";
 
@@ -28,11 +31,14 @@ const client = new ApolloClient({
 });
 
 export default () => (
-  <ApolloProvider client={client}>
-    <MuiThemeProvider theme={theme}>
-      <HelmetProvider>
-        <Router />
-      </HelmetProvider>
-    </MuiThemeProvider>
-  </ApolloProvider>
+  <>
+    <ReactNotification />
+    <ApolloProvider client={client}>
+      <MuiThemeProvider theme={theme}>
+        <HelmetProvider>
+          <Router />
+        </HelmetProvider>
+      </MuiThemeProvider>
+    </ApolloProvider>
+  </>
 );

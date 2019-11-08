@@ -24,6 +24,32 @@
         "NAME": "signin-page",
         "CONTENT": "signin-page"
       }
+    },
+    "forms": {
+      "accounts": {
+        "signin": {
+          "HEADLINE": "Login",
+          "fields": {
+            "TEXT": [
+              {
+                "id": "email",
+                "label": "E-mail",
+                "name": "email",
+                "placeholder": "your@email.com",
+                "type": "email"
+              },
+              {
+                "id": "password",
+                "label": "Password",
+                "name": "password",
+                "placeholder": "",
+                "type": "password"
+              }
+            ]
+          },
+          "SUBMIT_BTN_LBL": "Enter"
+        }
+      }
     }
   }
 }

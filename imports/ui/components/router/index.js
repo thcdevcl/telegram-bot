@@ -5,6 +5,7 @@ import { graphql } from "react-apollo";
 
 import { GlobalContextProvider } from "../../../startup/client/App";
 
+import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
 import Home from "../../pages/HomePage";
