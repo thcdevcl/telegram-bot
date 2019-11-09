@@ -7,6 +7,8 @@ import { withStyles } from "@material-ui/styles";
 
 import Helmet from "../utils/Helmet";
 
+import Navigation from "../../layouts/NavigationLayout";
+
 const styles = theme => ({
   main: {
     display: "flex",
@@ -56,6 +58,7 @@ function PrivateRoute({
             render={props => (
               <>
                 <Helmet title={title} name={name} content={content} />
+                <Navigation />
                 <main className={classes.main}>
                   {React.createElement(component)}
                 </main>
