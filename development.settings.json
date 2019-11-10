@@ -7,7 +7,7 @@
       "index": {
         "PATH": "/",
         "home": {
-          "TITLE": "Home",
+          "TITLE": "Dashboard",
           "NAME": "home-page",
           "CONTENT": "dashboard"
         },
@@ -49,6 +49,12 @@
           },
           "SUBMIT_BTN_LBL": "Enter"
         }
+      }
+    },
+    "dashboard": {
+      "telethon_api": {
+        "HEADLINE": "TelethonAPI",
+        "SUBTITLE": "Environment: local"
       }
     }
   },

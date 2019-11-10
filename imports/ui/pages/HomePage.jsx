@@ -1,3 +1,14 @@
 import React from "react";
 
-export default () => <h1>{Meteor.settings.public.router.index.home.TITLE}</h1>;
+import { Grid } from "@material-ui/core";
+
+import Page from "../layouts/PageLayout";
+import TelethonAPI from "../components/cards/TelethonAPI";
+
+export default () => (
+  <Page headline={Meteor.settings.public.router.index.home.TITLE}>
+    <Grid container>
+      <TelethonAPI />
+    </Grid>
+  </Page>
+);
