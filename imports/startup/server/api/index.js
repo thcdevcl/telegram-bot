@@ -3,6 +3,8 @@ import { ApolloServer } from "apollo-server-express";
 import { getUser } from "meteor/apollo";
 import { WebApp } from "meteor/webapp";
 
+import TelethonAPI from "../../../api/data-sources/telethonapi";
+
 import UserSchema from "../../../api/users/User.graphql";
 import UserResolvers from "../../../api/users/resolvers";
 
@@ -15,6 +17,9 @@ const server = new ApolloServer({
   resolvers,
   context: async ({ req }) => ({
     user: await getUser(req.headers.authorization)
+  }),
+  dataSources: () => ({
+    TelethonAPI: new TelethonAPI()
   })
 });
 
