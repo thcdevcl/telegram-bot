@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
+import classNames from "classnames";
 import { PropTypes } from "prop-types";
 import { Route, Redirect } from "react-router-dom";
 
 import { GlobalContextConsumer } from "../../../startup/client/App";
-import { withStyles } from "@material-ui/styles";
+
+import { useMediaQuery } from "@material-ui/core";
+import { useTheme, withStyles } from "@material-ui/styles";
 
 import Helmet from "../utils/Helmet";
 
@@ -32,6 +35,9 @@ const styles = theme => ({
     [theme.breakpoints.up("md")]: {
       paddingLeft: 200
     }
+  },
+  open: {
+    paddingLeft: 200
   }
 });
 
@@ -47,24 +53,28 @@ function PrivateRoute({
   content
 }) {
   if (!Meteor.userId()) return <Redirect to="/" />;
+  const [state, setState] = useState({ open: false });
+  const { open } = state;
+  const theme = useTheme();
+  const md = useMediaQuery(theme.breakpoints.only("md"));
   return (
     <GlobalContextConsumer>
       {context => {
         if (!context.currentUser) return <Redirect to="/" />;
         return (
-          <Route
-            exact={exact}
-            path={path}
-            render={props => (
-              <>
-                <Helmet title={title} name={name} content={content} />
-                <Navigation />
-                <main className={classes.main}>
-                  {React.createElement(component)}
-                </main>
-              </>
-            )}
-          />
+          <Route exact={exact} path={path}>
+            <Helmet title={title} name={name} content={content} />
+            <Navigation
+              onToggle={event =>
+                setState(prevState => ({ ...prevState, open: !open }))
+              }
+            />
+            <main
+              className={classNames(classes.main, md && open && classes.open)}
+            >
+              {React.createElement(component)}
+            </main>
+          </Route>
         );
       }}
     </GlobalContextConsumer>

@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({}) => {
+export default ({ onToggle }) => {
   const classes = useStyles();
   const [state, setState] = useState({ open: false });
   const { open } = state;
@@ -21,15 +21,19 @@ export default ({}) => {
       <AppBar color="primary" position="fixed" className={classes.appBar}>
         <Toolbar
           open={open}
-          toggleDrawer={() => setState(prev => ({ ...prev, open: !prev.open }))}
+          toggleDrawer={() => {
+            setState(prev => ({ ...prev, open: !prev.open }));
+            onToggle();
+          }}
         />
       </AppBar>
       {Meteor.userId() && (
         <PrivateDrawer
           open={open}
-          toggleDrawer={closed =>
-            setState(prev => ({ ...prev, open: closed ? false : !prev.open }))
-          }
+          toggleDrawer={closed => {
+            setState(prev => ({ ...prev, open: closed ? false : !prev.open }));
+            onToggle();
+          }}
         />
       )}
     </nav>
