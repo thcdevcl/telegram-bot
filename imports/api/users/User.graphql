@@ -2,6 +2,18 @@ type User {
   _id: ID
 }
 
+type Client {
+  authorized: Boolean
+  connected: Boolean
+}
+
 type Query {
   currentUser: User
+  checkClient: Client
+}
+
+type Mutation {
+  connectClient: Client
+  sendCode: Client
+  validateCode(code: Int!): Client
 }

@@ -26,6 +26,10 @@
       }
     },
     "forms": {
+      "commons": {
+        "CANCEL_BTN_LBL": "Cancel",
+        "SUBMIT_BTN_LBL": "Submit"
+      },
       "accounts": {
         "signin": {
           "HEADLINE": "Login",
@@ -49,12 +53,34 @@
           },
           "SUBMIT_BTN_LBL": "Enter"
         }
+      },
+      "telethon": {
+        "validate_code": {
+          "notifications": {
+            "messages": {
+              "CODE_OK": "Signed In"
+            }
+          }
+        }
       }
     },
     "dashboard": {
       "telethon_api": {
         "HEADLINE": "TelethonAPI",
-        "SUBTITLE": "Environment: local"
+        "SUBTITLE": "URL: localhost:8000",
+        "TELEGRAM": "Telegram",
+        "TELEGRAM_STATUS_CONNECTED": "Connected",
+        "TELEGRAM_AUTH": "Client",
+        "TELEGRAM_CLIENT_AUTHORIZED": "Authorized",
+        "DIALOG_TITLE": "Validate Code",
+        "SEND_BTN_LBL": "Send Code",
+        "CONNECT_BTN_LBL": "Connect",
+        "notifications": {
+          "messages": {
+            "CODE_SENT": "Code Sent",
+            "CLIENT_CONNECTED": "Connected"
+          }
+        }
       }
     }
   },

@@ -1,6 +1,11 @@
 import { store } from "react-notifications-component";
 
-export default ({ title, message = "", type, error }) => {
+export default ({
+  title = "Success",
+  message = "",
+  type = "success",
+  error
+}) => {
   store.addNotification({
     title: error ? "Error" : title,
     message: error ? (error.reason ? error.reason : error) : message,
@@ -25,6 +30,7 @@ export default ({ title, message = "", type, error }) => {
         timingFunction: "ease-out",
         delay: 0
       }
-    }
+    },
+    width: 220
   });
 };
