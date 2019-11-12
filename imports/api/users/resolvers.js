@@ -1,4 +1,10 @@
 export default {
+  Client: {
+    groupCount: async (obj, args, { dataSources }) => {
+      const res = await dataSources.TelethonAPI.getDialogs();
+      return res.length;
+    }
+  },
   Query: {
     currentUser: (obj, arg, { user }) => user,
     checkClient: async (obj, args, { dataSources }) =>

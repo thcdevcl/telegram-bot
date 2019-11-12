@@ -23,6 +23,12 @@
         "TITLE": "Sign In",
         "NAME": "signin-page",
         "CONTENT": "signin-page"
+      },
+      "groups": {
+        "PATH": "/groups",
+        "TITLE": "Groups",
+        "NAME": "groups-page",
+        "CONTENT": "groups-page"
       }
     },
     "forms": {
@@ -81,6 +87,11 @@
             "CLIENT_CONNECTED": "Connected"
           }
         }
+      },
+      "groups": {
+        "HEADLINE": "Group Count",
+        "HEADLINE_SHORT": "Group",
+        "ACTION_BTN_LBL": "Whisper Group"
       }
     }
   },

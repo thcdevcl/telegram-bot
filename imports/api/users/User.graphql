@@ -5,6 +5,7 @@ type User {
 type Client {
   authorized: Boolean
   connected: Boolean
+  groupCount: Int
 }
 
 type Query {

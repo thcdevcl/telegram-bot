@@ -6,6 +6,10 @@ form {
   width: 100%;
 }
 
+a {
+  text-decoration: none;
+}
+
 #react-root {
   position: absolute;
   width: 100%;

@@ -21,6 +21,7 @@ import Spinner from "../utils/Spinner";
 import ValidateCode from "../forms/telethon/ValidateCodeForm";
 
 const useStyles = makeStyles(theme => ({
+  card: { height: "100%" },
   row: { padding: 4 }
 }));
 
@@ -51,9 +52,10 @@ const SEND_CODE = gql`
 
 export default () => {
   const classes = useStyles();
-  const [state, setState] = useState({ dialog: false });
-  const { dialog } = state;
+  const [state, setState] = useState({ dialog: false, hover: false });
+  const { dialog, hover } = state;
   const toggleDialog = () => setState(prev => ({ ...prev, dialog: !dialog }));
+  const toggleHover = () => setState(prev => ({ ...prev, hover: !hover }));
   return (
     <Query query={CHECK_CLIENT}>
       {({ error, loading, data, refetch }) => {
@@ -65,10 +67,15 @@ export default () => {
             <Grid
               container
               component={Card}
-              elevation={2}
               classes={{ root: classes.card }}
+              raised={hover}
             >
-              <Grid container component={CardContent}>
+              <Grid
+                container
+                component={CardContent}
+                onMouseEnter={toggleHover}
+                onMouseLeave={toggleHover}
+              >
                 <Grid container direction="column" justify="center">
                   <Typography variant="h5">
                     {Meteor.settings.public.dashboard.telethon_api.HEADLINE}
