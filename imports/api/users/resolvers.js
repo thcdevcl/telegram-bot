@@ -1,5 +1,7 @@
 export default {
   Client: {
+    groups: async (obj, args, { dataSources }) =>
+      await dataSources.TelethonAPI.getDialogs(),
     groupCount: async (obj, args, { dataSources }) => {
       const res = await dataSources.TelethonAPI.getDialogs();
       return res.length;

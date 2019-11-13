@@ -50,7 +50,7 @@ function GroupsCard({ groupCount }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("sm"));
   return (
-    <Grid item xs={12} md={4}>
+    <Grid item xs={12} md={9}>
       <Card
         raised={matches ? true : hover}
         classes={{ root: classes.card }}

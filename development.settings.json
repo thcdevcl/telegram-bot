@@ -93,6 +93,11 @@
         "HEADLINE_SHORT": "Group",
         "ACTION_BTN_LBL": "Whisper Group"
       }
+    },
+    "pages": {
+      "groups": {
+        "HEADLINE": "Groups"
+      }
     }
   },
   "private": {

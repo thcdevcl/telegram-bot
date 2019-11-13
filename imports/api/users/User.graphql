@@ -2,10 +2,17 @@ type User {
   _id: ID
 }
 
+type Group {
+  id: ID
+  title: String
+  date: String
+}
+
 type Client {
   authorized: Boolean
   connected: Boolean
   groupCount: Int
+  groups: [Group]
 }
 
 type Query {

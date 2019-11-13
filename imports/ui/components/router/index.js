@@ -8,6 +8,7 @@ import { GlobalContextProvider } from "../../../startup/client/App";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
+import Groups from "../../pages/GroupsPage";
 import Home from "../../pages/HomePage";
 import Index from "../../pages/IndexPage";
 import NotFound from "../../pages/NotFoundPage";
@@ -41,6 +42,14 @@ function Router({ loading, currentUser }) {
                 name={Meteor.settings.public.router.index.NAME}
               />
             )}
+            <PrivateRoute
+              exact
+              component={Groups}
+              path={Meteor.settings.public.router.groups.PATH}
+              title={Meteor.settings.public.router.groups.TITLE}
+              content={Meteor.settings.public.router.groups.CONTENT}
+              name={Meteor.settings.public.router.groups.NAME}
+            />
             <Route component={NotFound} />
           </Switch>
         </ScrollTop>
