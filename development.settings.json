@@ -28,7 +28,13 @@
         "PATH": "/groups",
         "TITLE": "Groups",
         "NAME": "groups-page",
-        "CONTENT": "groups-page"
+        "CONTENT": "groups-page",
+        "view": {
+          "PATH": "/groups/:id",
+          "TITLE": "Group",
+          "NAME": "group-page",
+          "CONTENT": "group-page"
+        }
       }
     },
     "forms": {

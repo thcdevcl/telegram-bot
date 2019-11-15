@@ -1,4 +1,8 @@
 export default {
+  Group: {
+    participants: async ({ id }, args, { dataSources }) =>
+      await dataSources.TelethonAPI.getParticipants(id)
+  },
   Client: {
     groups: async (obj, args, { dataSources }) =>
       await dataSources.TelethonAPI.getDialogs(),
@@ -10,7 +14,9 @@ export default {
   Query: {
     currentUser: (obj, arg, { user }) => user,
     checkClient: async (obj, args, { dataSources }) =>
-      await dataSources.TelethonAPI.checkClient()
+      await dataSources.TelethonAPI.checkClient(),
+    group: async (obj, { id }, { dataSources }) =>
+      await dataSources.TelethonAPI.getEntity(id)
   },
   Mutation: {
     connectClient: async (obj, args, { dataSources }) =>
@@ -22,6 +28,9 @@ export default {
     validateCode: async (obj, { code }, { dataSources }) => {
       const res = await dataSources.TelethonAPI.signinClient(code);
       return { connected: true };
+    },
+    sendBulkMessage: async (obj, { bulk }, { dataSources }) => {
+      return { sent: true };
     }
   }
 };

@@ -2,10 +2,18 @@ type User {
   _id: ID
 }
 
+type Message {
+  sent: Boolean
+}
+
+type Participant {
+  id: ID
+}
+
 type Group {
   id: ID
   title: String
-  date: String
+  participants: [Participant]
 }
 
 type Client {
@@ -18,10 +26,17 @@ type Client {
 type Query {
   currentUser: User
   checkClient: Client
+  group(id: ID!): Group
+}
+
+input BulkMessageInput {
+  ids: [ID]!
+  message: String!
 }
 
 type Mutation {
   connectClient: Client
   sendCode: Client
   validateCode(code: Int!): Client
+  sendBulkMessage(bulk: BulkMessageInput!): Message
 }

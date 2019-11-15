@@ -25,6 +25,14 @@ class TelethonAPI extends RESTDataSource {
   async signinClient(code) {
     return await this.get(`sign-in/${code}`);
   }
+
+  async getEntity(id) {
+    return await this.get(`get-entity/${id}`);
+  }
+
+  async getParticipants(id) {
+    return await this.get(`get-participants/${id}`);
+  }
 }
 
 export default TelethonAPI;
