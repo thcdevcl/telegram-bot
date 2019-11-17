@@ -30,6 +30,7 @@ export default {
       return { connected: true };
     },
     sendBulkMessage: async (obj, { bulk }, { dataSources }) => {
+      const { ids, message } = bulk;
       return { sent: true };
     }
   }

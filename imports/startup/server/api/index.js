@@ -3,6 +3,7 @@ import { ApolloServer } from "apollo-server-express";
 import { getUser } from "meteor/apollo";
 import { WebApp } from "meteor/webapp";
 
+import TelegramBotAPI from "../../../api/data-sources/telegram-bot-api";
 import TelethonAPI from "../../../api/data-sources/telethonapi";
 
 import UserSchema from "../../../api/users/User.graphql";
@@ -19,7 +20,8 @@ const server = new ApolloServer({
     user: await getUser(req.headers.authorization)
   }),
   dataSources: () => ({
-    TelethonAPI: new TelethonAPI()
+    TelethonAPI: new TelethonAPI(),
+    TelegramBotAPI: new TelegramBotAPI()
   })
 });
 
