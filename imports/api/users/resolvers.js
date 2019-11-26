@@ -31,6 +31,13 @@ export default {
     },
     sendBulkMessage: async (obj, { bulk }, { dataSources }) => {
       const { ids, message } = bulk;
+      ids.forEach(
+        async id =>
+          await dataSources.TelethonAPI.sendMessage({
+            to: parseInt(id),
+            message
+          })
+      );
       return { sent: true };
     }
   }

@@ -33,6 +33,10 @@ class TelethonAPI extends RESTDataSource {
   async getParticipants(id) {
     return await this.get(`get-participants/${id}`);
   }
+
+  async sendMessage(dispatch) {
+    return await this.post(`send-message`, dispatch);
+  }
 }
 
 export default TelethonAPI;
