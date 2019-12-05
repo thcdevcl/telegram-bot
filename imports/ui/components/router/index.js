@@ -17,11 +17,11 @@ import NotFound from "../../pages/NotFoundPage";
 import Spinner from "../utils/Spinner";
 import ScrollTop from "../utils/ScrollTop";
 
-function Router({ loading, currentUser }) {
+function Router({ loading, currentUser, checkClient }) {
   if (loading) return <Spinner />;
   return (
     <BrowserRouter>
-      <GlobalContextProvider value={{ currentUser }}>
+      <GlobalContextProvider value={{ currentUser, telethonapi: checkClient }}>
         <ScrollTop>
           <Switch>
             {currentUser ? (
@@ -71,6 +71,10 @@ const CURRENT_USER = gql`
   query currentUser {
     currentUser {
       _id
+    }
+    checkClient {
+      authorized
+      connected
     }
   }
 `;
