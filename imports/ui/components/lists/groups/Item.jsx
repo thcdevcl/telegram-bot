@@ -4,14 +4,12 @@ import { Link } from "react-router-dom";
 
 import {
   Avatar,
-  Button,
   Card,
   Grid,
   Typography,
   useMediaQuery
 } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import { Mail } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   rootContainer: {
@@ -68,12 +66,6 @@ export default ({ id, title }) => {
             >
               {title}
             </Typography>
-            {(matches || hover) && (
-              <Button size="small" variant="contained" color="secondary">
-                Bulk
-                <Mail />
-              </Button>
-            )}
           </Grid>
         </Grid>
       </Grid>
