@@ -1,7 +1,5 @@
 import React from "react";
-import classNames from "classnames";
 import gql from "graphql-tag";
-import { Link } from "react-router-dom";
 import { Query } from "react-apollo";
 import { useParams } from "react-router-dom";
 
@@ -12,14 +10,11 @@ import Spinner from "../components/utils/Spinner";
 
 import Page from "../layouts/PageLayout";
 
-import Message from "../components/forms/groups/MessageForm";
-
 const useStyles = makeStyles(theme => ({
-  members: {
-    "&:hover": {
-      textDecoration: "underline",
-      cursor: "pointer"
-    }
+  item: {
+    margin: `4px 0px`,
+    padding: `4px ${theme.spacing(2)}px`,
+    backgroundColor: theme.palette.background.paper
   }
 }));
 
@@ -39,8 +34,8 @@ const GROUP = gql`
 `;
 
 export default () => {
-  const classes = useStyles();
   const { id } = useParams();
+  const classes = useStyles();
   return (
     <Query query={GROUP} variables={{ id }}>
       {({ error, loading, data }) => {
@@ -50,19 +45,21 @@ export default () => {
         return (
           <Page headline={group.title}>
             <Grid container justify="center">
-              <Typography
-                variant="h5"
-                paragraph
-                align="center"
-                component={Link}
-                to={`${Meteor.settings.public.router.participants.PATH}/${group.id}`}
-                classes={{ root: classNames(classes.members) }}
-              >{`Participants: ${group.participants.length}`}</Typography>
-              <Grid item xs={10} md={9}>
-                <Grid container style={{ padding: `16px 24px` }}>
-                  <Message ids={group.participants.map(({ id }) => id)} />
-                </Grid>
-              </Grid>
+              {group.participants.length > 0 &&
+                group.participants.map(participant => (
+                  <Grid
+                    key={participant.id}
+                    item
+                    xs={12}
+                    classes={{ root: classes.item }}
+                  >
+                    <Typography variant="h6" color="primary">
+                      {participant.username
+                        ? participant.username
+                        : `${participant.first_name} ${participant.last_name}`}
+                    </Typography>
+                  </Grid>
+                ))}
             </Grid>
           </Page>
         );
