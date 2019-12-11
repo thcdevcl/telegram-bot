@@ -13,12 +13,6 @@ type Participant {
   last_name: String
 }
 
-type Group {
-  id: ID
-  title: String
-  participants: [Participant]
-}
-
 type Client {
   authorized: Boolean
   connected: Boolean
@@ -29,7 +23,6 @@ type Client {
 type Query {
   currentUser: User
   checkClient: Client
-  group(id: ID!): Group
 }
 
 input BulkMessageInput {

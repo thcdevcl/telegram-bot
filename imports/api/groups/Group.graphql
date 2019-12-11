@@ -1,0 +1,9 @@
+type Group {
+  id: ID
+  title: String
+  participants: [Participant]
+}
+
+extend type Query {
+  group(id: ID!): Group
+}
