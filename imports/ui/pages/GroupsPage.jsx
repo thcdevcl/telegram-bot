@@ -7,11 +7,12 @@ import { Grid } from "@material-ui/core";
 import Spinner from "../components/utils/Spinner";
 
 import Group from "../components/lists/groups/Item";
+import Header from "../layouts/pages/headers/GroupsHeaderLayout";
 import Page from "../layouts/PageLayout";
 
 function GroupsPage({ groups }) {
   return (
-    <Page headline={Meteor.settings.public.pages.groups.HEADLINE}>
+    <Page header={<Header />}>
       <Grid container justify="center">
         <Grid item xs={12} md={6}>
           <Grid container>
