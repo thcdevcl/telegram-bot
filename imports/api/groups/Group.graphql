@@ -4,6 +4,14 @@ type Group {
   participants: [Participant]
 }
 
+input GroupInput {
+  name: String!
+}
+
 extend type Query {
   group(id: ID!): Group
+}
+
+extend type Mutation {
+  createGroup(group: GroupInput!): Group
 }
