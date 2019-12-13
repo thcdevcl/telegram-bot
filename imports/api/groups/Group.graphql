@@ -1,11 +1,12 @@
 type Group {
+  _id: String
   id: ID
   title: String
   participants: [Participant]
 }
 
 input GroupInput {
-  name: String!
+  title: String!
 }
 
 extend type Query {

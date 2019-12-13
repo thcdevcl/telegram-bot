@@ -43,10 +43,10 @@ Groups.schema = new SimpleSchema({
     optional: false,
     label: "_id of user that created this group."
   },
-  name: {
+  title: {
     type: String,
     optional: false,
-    label: "Group name."
+    label: "Group title."
   },
   participantids: [String]
 });

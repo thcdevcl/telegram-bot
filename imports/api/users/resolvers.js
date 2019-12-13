@@ -1,7 +1,13 @@
+import Groups from "../groups/Groups";
+
 export default {
   Client: {
-    groups: async (obj, args, { dataSources }) =>
-      await dataSources.TelethonAPI.getDialogs(),
+    groups: async (obj, args, { dataSources, user }) => {
+      const groups = await dataSources.TelethonAPI.getDialogs();
+      const customGroups = Groups.find({ owner: user._id }).fetch();
+      console.log(groups.concat(customGroups));
+      return groups.concat(customGroups);
+    },
     groupCount: async (obj, args, { dataSources }) => {
       const res = await dataSources.TelethonAPI.getDialogs();
       return res.length;

@@ -2,7 +2,7 @@ import Groups from "./Groups";
 
 export default {
   Group: {
-    id: ({ _id, id }, args, ctx) => (id ? id : _id),
+    id: ({ _id, id }, args, ctx) => (_id ? _id : id),
     participants: async (
       { _id, id, participantids },
       args,
@@ -20,7 +20,13 @@ export default {
       await dataSources.TelethonAPI.getEntity(id)
   },
   Mutation: {
-    createGroup: (obj, { group }, { user }) =>
-      Groups.insert({ name: group.name, owner: user._id, participantids: [] })
+    createGroup: (obj, { group }, { user }) => {
+      const _id = Groups.insert({
+        title: group.title,
+        owner: user._id,
+        participantids: []
+      });
+      return Groups.findOne({ _id });
+    }
   }
 };

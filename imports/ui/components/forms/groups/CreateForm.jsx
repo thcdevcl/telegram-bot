@@ -12,7 +12,9 @@ import Spinner from "../../utils/Spinner";
 const CREATE_GROUP = gql`
   mutation createGroup($group: GroupInput!) {
     createGroup(group: $group) {
+      _id
       id
+      title
     }
   }
 `;
@@ -24,32 +26,32 @@ export default ({ onCancel }) => (
       if (error) return `Error: ${error}`;
       return (
         <Formik
-          initialValues={{ name: "" }}
-          onSubmit={({ name }, { setSubmitting }) => {
+          initialValues={{ title: "" }}
+          onSubmit={({ title }, { setSubmitting }) => {
             setSubmitting(true);
-            const group = { name };
+            const group = { title };
             createGroup({ variables: { group } })
               .then(() => {
-                Notify();
                 onCancel();
+                Notify({ message: "Group created." });
               })
               .catch(error => Notify({ error }));
           }}
         >
           {({ values, handleChange, handleSubmit, isSubmitting }) => {
             if (isSubmitting) return <Spinner />;
-            const { name } = values;
+            const { title } = values;
             return (
               <form onSubmit={handleSubmit}>
                 <Grid container>
                   <TextField
-                    id="name"
+                    id="title"
                     margin="dense"
                     variant="outlined"
-                    values={name}
+                    values={title}
                     onChange={handleChange}
                     fullWidth
-                    placeholder="Name"
+                    placeholder="Title"
                     required
                   />
                   <Grid item xs={12}>

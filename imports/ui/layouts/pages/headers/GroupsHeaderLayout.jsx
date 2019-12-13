@@ -11,10 +11,9 @@ import {
 
 import AddGroup from "../../../components/forms/groups/CreateForm";
 
-export default () => {
+export default refetch => {
   const [state, setState] = useState({ dialog: false });
   const { dialog } = state;
-
   const toggleDialog = () =>
     setState(prevState => ({ ...prevState, dialog: !dialog }));
   return (
@@ -42,7 +41,7 @@ export default () => {
       >
         <DialogTitle id="add-custom-group-dialog">Add Group</DialogTitle>
         <DialogContent>
-          <AddGroup onCancel={toggleDialog} />
+          <AddGroup onCancel={toggleDialog} refetch={refetch} />
         </DialogContent>
       </Dialog>
     </Grid>
