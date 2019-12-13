@@ -16,8 +16,12 @@ export default {
     }
   },
   Query: {
-    group: async (obj, { id }, { dataSources }) =>
-      await dataSources.TelethonAPI.getEntity(id)
+    group: async (obj, { id }, { dataSources }) => {
+      const customGroup = Groups.findOne({ _id: id });
+      return customGroup
+        ? customGroup
+        : await dataSources.TelethonAPI.getEntity(id);
+    }
   },
   Mutation: {
     createGroup: (obj, { group }, { user }) => {
