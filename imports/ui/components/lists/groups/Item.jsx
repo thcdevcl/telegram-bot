@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ id, title }) => {
+export default ({ _id, id, title }) => {
   const classes = useStyles();
   const [state, setState] = useState({ hover: false });
   const { hover } = state;
@@ -66,6 +66,7 @@ export default ({ id, title }) => {
             >
               {title}
             </Typography>
+            {!_id && <i className="fab fa-telegram"></i>}
           </Grid>
         </Grid>
       </Grid>

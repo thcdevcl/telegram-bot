@@ -30,6 +30,7 @@ const GET_GROUPS = gql`
   query {
     checkClient {
       groups {
+        _id
         id
         title
       }
