@@ -23,6 +23,7 @@ type Client {
 type Query {
   currentUser: User
   checkClient: Client
+  customGroups: [Group]
 }
 
 input BulkMessageInput {

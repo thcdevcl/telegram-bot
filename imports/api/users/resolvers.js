@@ -15,7 +15,9 @@ export default {
   Query: {
     currentUser: (obj, arg, { user }) => user,
     checkClient: async (obj, args, { dataSources }) =>
-      await dataSources.TelethonAPI.checkClient()
+      await dataSources.TelethonAPI.checkClient(),
+    customGroups: (obj, args, { user }) =>
+      Groups.find({ owner: user._id }).fetch()
   },
   Mutation: {
     connectClient: async (obj, args, { dataSources }) =>
