@@ -31,6 +31,10 @@ export default {
         participantids: []
       });
       return Groups.findOne({ _id });
+    },
+    addMember: (obj, { id, target }, { user }) => {
+      Groups.update({ _id: target }, { $addToSet: { participantids: id } });
+      return Groups.findOne({ _id: target });
     }
   }
 };
