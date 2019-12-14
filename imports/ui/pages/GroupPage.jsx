@@ -50,16 +50,20 @@ export default () => {
         return (
           <Page headline={group.title}>
             <Grid container justify="center">
-              <Typography
-                variant="h5"
-                paragraph
-                align="center"
-                component={Link}
-                to={`${Meteor.settings.public.router.participants.PATH}/${group.id}`}
-                classes={{ root: classNames(classes.members) }}
-              >{`Participants: ${group.participants.length}`}</Typography>
               <Grid item xs={10} md={9}>
-                <Grid container style={{ padding: `16px 24px` }}>
+                <Grid
+                  container
+                  style={{ padding: `16px 24px` }}
+                  direction="column"
+                >
+                  <Typography
+                    variant="h5"
+                    paragraph
+                    align="center"
+                    component={Link}
+                    to={`${Meteor.settings.public.router.participants.PATH}/${group.id}`}
+                    classes={{ root: classNames(classes.members) }}
+                  >{`Participants: ${group.participants.length}`}</Typography>
                   <Message ids={group.participants.map(({ id }) => id)} />
                 </Grid>
               </Grid>
