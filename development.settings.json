@@ -44,6 +44,12 @@
         "view": {
           "PATH": "/participants/:id"
         }
+      },
+      "settings": {
+        "PATH": "/settings",
+        "TITLE": "Settings",
+        "NAME": "settings-page",
+        "CONTENT": "settings-page"
       }
     },
     "forms": {

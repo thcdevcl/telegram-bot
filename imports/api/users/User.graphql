@@ -1,5 +1,16 @@
 type User {
   _id: ID
+  profile: Profile
+}
+
+type Profile {
+  app: TelegramAPP
+}
+
+type TelegramAPP {
+  api_id: String
+  api_hash: String
+  phone: String
 }
 
 type Message {

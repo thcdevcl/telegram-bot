@@ -1,6 +1,9 @@
 import Groups from "../groups/Groups";
 
 export default {
+  User: {
+    profile: (obj, args, { user }) => user.profile
+  },
   Client: {
     groups: async (obj, args, { dataSources, user }) => {
       const groups = await dataSources.TelethonAPI.getDialogs();

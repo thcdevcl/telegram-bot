@@ -80,6 +80,13 @@ const CURRENT_USER = gql`
   query currentUser {
     currentUser {
       _id
+      profile {
+        app {
+          api_id
+          api_hash
+          phone
+        }
+      }
     }
     checkClient {
       authorized

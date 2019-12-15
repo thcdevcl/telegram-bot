@@ -59,8 +59,11 @@ function PrivateRoute({
   const md = useMediaQuery(theme.breakpoints.only("md"));
   return (
     <GlobalContextConsumer>
-      {context => {
-        if (!context.currentUser) return <Redirect to="/" />;
+      {({ currentUser }) => {
+        if (!currentUser) return <Redirect to="/" />;
+        const { api_id, api_hash, phone } = currentUser.profile.app;
+        if (!api_id || !api_hash || !phone)
+          return <Redirect to={Meteor.settings.public.router.settings.PATH} />;
         return (
           <Route exact={exact} path={path}>
             <Helmet title={title} name={name} content={content} />
