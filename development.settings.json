@@ -79,6 +79,27 @@
             ]
           },
           "SUBMIT_BTN_LBL": "Enter"
+        },
+        "signup": {
+          "HEADLINE": "Create Account",
+          "fields": {
+            "TEXT": [
+              {
+                "id": "email",
+                "label": "E-mail",
+                "name": "email",
+                "placeholder": "your@email.com",
+                "type": "email"
+              },
+              {
+                "id": "password",
+                "label": "Password",
+                "name": "password",
+                "placeholder": "",
+                "type": "password"
+              }
+            ]
+          }
         }
       },
       "telethon": {
