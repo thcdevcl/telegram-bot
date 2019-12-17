@@ -14,7 +14,8 @@ import {
   Dashboard,
   ChevronLeft,
   ChevronRight,
-  ExitToApp
+  ExitToApp,
+  SettingsApplications
 } from "@material-ui/icons";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
@@ -123,6 +124,14 @@ function PrivateDrawer({ open, toggleDrawer, client, history }) {
                 toggleDrawer={toggleDrawer}
               >
                 <Dashboard />
+              </Item>
+              <Item
+                label={Meteor.settings.public.router.settings.TITLE}
+                open={open}
+                to={Meteor.settings.public.router.settings.PATH}
+                toggleDrawer={toggleDrawer}
+              >
+                <SettingsApplications />
               </Item>
               <Item
                 label="Logout"

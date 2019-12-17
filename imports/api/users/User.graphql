@@ -37,6 +37,12 @@ type Query {
   customGroups: [Group]
 }
 
+input TelegramAppInput {
+  api_id: String!
+  api_hash: String!
+  phone: String!
+}
+
 input BulkMessageInput {
   ids: [ID]!
   message: String!
@@ -47,4 +53,5 @@ type Mutation {
   sendCode: Client
   validateCode(code: Int!): Client
   sendBulkMessage(bulk: BulkMessageInput!): Message
+  setProfileApp(app: TelegramAppInput!): User
 }

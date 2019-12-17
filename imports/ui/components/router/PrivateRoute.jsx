@@ -5,12 +5,20 @@ import { Route, Redirect } from "react-router-dom";
 
 import { GlobalContextConsumer } from "../../../startup/client/App";
 
-import { useMediaQuery } from "@material-ui/core";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  useMediaQuery
+} from "@material-ui/core";
 import { useTheme, withStyles } from "@material-ui/styles";
 
 import Helmet from "../utils/Helmet";
 
 import Navigation from "../../layouts/NavigationLayout";
+
+import TelethonAPI from "../../components/cards/TelethonAPICard";
+import TelegramApp from "../forms/settings/TelegramAppForm";
 
 const styles = theme => ({
   main: {
@@ -53,17 +61,18 @@ function PrivateRoute({
   content
 }) {
   if (!Meteor.userId()) return <Redirect to="/" />;
-  const [state, setState] = useState({ open: false });
-  const { open } = state;
+  const [state, setState] = useState({ open: false, dialog: false });
+  const { open, dialog } = state;
   const theme = useTheme();
   const md = useMediaQuery(theme.breakpoints.only("md"));
+  const toggleDialog = () =>
+    setState(prevState => ({ ...prevState, dialog: !dialog }));
   return (
     <GlobalContextConsumer>
-      {({ currentUser }) => {
+      {({ currentUser, telethonapi }) => {
         if (!currentUser) return <Redirect to="/" />;
         const { api_id, api_hash, phone } = currentUser.profile.app;
-        if (!api_id || !api_hash || !phone)
-          return <Redirect to={Meteor.settings.public.router.settings.PATH} />;
+        const { authorized, connected } = telethonapi;
         return (
           <Route exact={exact} path={path}>
             <Helmet title={title} name={name} content={content} />
@@ -72,11 +81,54 @@ function PrivateRoute({
                 setState(prevState => ({ ...prevState, open: !open }))
               }
             />
-            <main
-              className={classNames(classes.main, md && open && classes.open)}
+            {api_id.length > 0 &&
+              api_hash.length > 0 &&
+              phone.length > 0 &&
+              authorized &&
+              connected && (
+                <main
+                  className={classNames(
+                    classes.main,
+                    md && open && classes.open
+                  )}
+                >
+                  {React.createElement(component)}
+                </main>
+              )}
+            <Dialog
+              open={
+                (api_id.length == 0 &&
+                  api_hash.length == 0 &&
+                  phone.length == 0) ||
+                !authorized ||
+                !connected
+              }
+              disableBackdropClick
+              maxWidth="sm"
+              fullWidth
             >
-              {React.createElement(component)}
-            </main>
+              {api_id.length == 0 &&
+                api_hash.length == 0 &&
+                phone.length == 0 &&
+                authorized &&
+                connected && <DialogTitle>Telegram APP</DialogTitle>}
+              <DialogContent>
+                {api_id.length == 0 &&
+                api_hash.length == 0 &&
+                phone.length == 0 ? (
+                  <TelegramApp
+                    toggable={
+                      api_id.length > 0 &&
+                      api_hash.length > 0 &&
+                      phone.length > 0
+                    }
+                    onCancel={toggleDialog}
+                  />
+                ) : !authorized || !connected ? (
+                  <TelethonAPI />
+                ) : null}
+              </DialogContent>
+            </Dialog>
           </Route>
         );
       }}

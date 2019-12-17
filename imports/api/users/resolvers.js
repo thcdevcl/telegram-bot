@@ -43,6 +43,11 @@ export default {
           })
       );
       return { sent: true };
-    }
+    },
+    setProfileApp: async (obj, { app }, { user, dataSources }) =>
+      Meteor.users.update(
+        { _id: user._id },
+        { $set: { "profile.app": { ...app } } }
+      )
   }
 };
