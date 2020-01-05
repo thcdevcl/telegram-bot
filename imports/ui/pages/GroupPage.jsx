@@ -3,9 +3,9 @@ import classNames from "classnames";
 import gql from "graphql-tag";
 import { Link } from "react-router-dom";
 import { Query } from "react-apollo";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
-import { Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Spinner from "../components/utils/Spinner";
@@ -38,6 +38,28 @@ const GROUP = gql`
   }
 `;
 
+const Error = () => {
+  const history = useHistory();
+  return (
+    <Grid style={{ width: "100%" }}>
+      <Typography variant="h3">Error</Typography>
+      <Typography variant="h4" paragraph>
+        Missing chat permissions
+      </Typography>
+      <Grid container justify="center">
+        <Button
+          variant="contained"
+          color="secondary"
+          align="center"
+          onClick={event => history.goBack()}
+        >
+          Go Back
+        </Button>
+      </Grid>
+    </Grid>
+  );
+};
+
 export default () => {
   const classes = useStyles();
   const { id } = useParams();
@@ -45,7 +67,7 @@ export default () => {
     <Query query={GROUP} variables={{ id }}>
       {({ error, loading, data }) => {
         if (loading) return <Spinner />;
-        if (error) return `Error: ${error}`;
+        if (error) return <Error />;
         const { group } = data;
         return (
           <Page headline={group.title}>
