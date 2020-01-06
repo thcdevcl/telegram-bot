@@ -24,10 +24,15 @@ type Participant {
   last_name: String
 }
 
+type GroupCount {
+  telegram: Int
+  custom: Int
+}
+
 type Client {
   authorized: Boolean
   connected: Boolean
-  groupCount: Int
+  groupCount: GroupCount
   groups: [Group]
 }
 

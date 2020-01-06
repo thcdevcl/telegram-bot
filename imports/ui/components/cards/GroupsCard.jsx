@@ -37,12 +37,16 @@ const useStyles = makeStyles(theme => ({
 const GROUP_COUNT = gql`
   query {
     checkClient {
-      groupCount
+      groupCount {
+        telegram
+        custom
+      }
     }
   }
 `;
 
 function GroupsCard({ groupCount }) {
+  console.log(groupCount);
   const classes = useStyles();
   const [state, setState] = useState({ hover: false });
   const { hover } = state;
@@ -73,41 +77,50 @@ function GroupsCard({ groupCount }) {
             style={{ height: "100%" }}
             direction="column"
           >
-            {(!hover || matches) && (
-              <Typography variant="h5" align="center" gutterBottom>
-                {Meteor.settings.public.dashboard.groups.HEADLINE}
-              </Typography>
-            )}
-            {matches ? (
-              <>
-                <Typography
-                  variant="h1"
-                  align="center"
-                  classes={{
-                    root: classNames(classes.count, hover && classes.darkerText)
-                  }}
-                >
-                  {groupCount}
-                </Typography>
-                <Button variant="contained" color="secondary">
-                  {Meteor.settings.public.dashboard.groups.ACTION_BTN_LBL}
-                </Button>
-              </>
-            ) : hover ? (
+            <Typography variant="h5" align="center" gutterBottom>
+              {Meteor.settings.public.dashboard.groups.HEADLINE}
+            </Typography>
+            <>
+              <Grid container>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="h1"
+                    align="center"
+                    classes={{
+                      root: classNames(
+                        classes.count,
+                        hover && classes.darkerText
+                      )
+                    }}
+                  >
+                    <Typography variant="h6" align="center">
+                      Telegram
+                    </Typography>
+                    {groupCount.telegram}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="h1"
+                    align="center"
+                    classes={{
+                      root: classNames(
+                        classes.count,
+                        hover && classes.darkerText
+                      )
+                    }}
+                  >
+                    <Typography variant="h6" align="center">
+                      Custom
+                    </Typography>
+                    {groupCount.custom}
+                  </Typography>
+                </Grid>
+              </Grid>
               <Button variant="contained" color="secondary">
                 {Meteor.settings.public.dashboard.groups.ACTION_BTN_LBL}
               </Button>
-            ) : (
-              <Typography
-                variant="h1"
-                align="center"
-                classes={{
-                  root: classNames(classes.count, hover && classes.darkerText)
-                }}
-              >
-                {groupCount}
-              </Typography>
-            )}
+            </>
           </Grid>
         </CardContent>
       </Card>

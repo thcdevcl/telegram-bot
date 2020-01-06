@@ -131,8 +131,8 @@
         }
       },
       "groups": {
-        "HEADLINE": "Group Count",
-        "HEADLINE_SHORT": "Group",
+        "HEADLINE": "Groups",
+        "HEADLINE_SHORT": "Groups",
         "ACTION_BTN_LBL": "Whisper Group"
       }
     },

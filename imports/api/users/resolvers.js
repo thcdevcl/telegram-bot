@@ -10,9 +10,12 @@ export default {
       const customGroups = Groups.find({ owner: user._id }).fetch();
       return groups.concat(customGroups);
     },
-    groupCount: async (obj, args, { dataSources }) => {
+    groupCount: async (obj, args, { user, dataSources }) => {
       const res = await dataSources.TelethonAPI.getDialogs();
-      return res.length;
+      return {
+        telegram: res.length,
+        custom: Groups.find({ owner: user._id }).fetch().length
+      };
     }
   },
   Query: {
