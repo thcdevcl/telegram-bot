@@ -29,7 +29,6 @@ function Form({ client }) {
       onSubmit={({ email, password }, { setSubmitting }) => {
         Meteor.loginWithPassword(email, password, error => {
           if (!error) {
-            1;
             client.resetStore();
           } else {
             setSubmitting(false);

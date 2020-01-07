@@ -15,15 +15,15 @@ import Index from "../../pages/IndexPage";
 import Participants from "../../pages/ParticipantsPage";
 import Settings from "../../pages/SettingsPage";
 import NotFound from "../../pages/NotFoundPage";
-
 import Spinner from "../utils/Spinner";
 import ScrollTop from "../utils/ScrollTop";
 
 function Router({ loading, currentUser, checkClient }) {
   if (loading) return <Spinner />;
+  console.log(checkClient);
   return (
     <BrowserRouter>
-      <GlobalContextProvider value={{ currentUser, telethonapi: checkClient }}>
+      <GlobalContextProvider value={{ currentUser, telethonapi: {} }}>
         <ScrollTop>
           <Switch>
             {currentUser ? (
@@ -94,12 +94,13 @@ const CURRENT_USER = gql`
           api_id
           api_hash
           phone
+          session_string
         }
       }
     }
     checkClient {
-      authorized
       connected
+      authorized
     }
   }
 `;

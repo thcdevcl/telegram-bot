@@ -2,6 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Formik } from "formik";
 import { Mutation } from "react-apollo";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import { Button, Grid, TextField } from "@material-ui/core";
@@ -22,9 +23,10 @@ const formSchema = Yup.object().shape({
   code: Yup.number().required("Required field")
 });
 
-export default ({ onCancel, refetch }) => (
+export default () => (
   <Mutation mutation={VALIDATE_CODE}>
     {(validateCode, { error, loading }) => {
+      const history = useHistory();
       return (
         <Formik
           initialValues={{ code: "" }}
@@ -38,9 +40,8 @@ export default ({ onCancel, refetch }) => (
                     Meteor.settings.public.forms.telethon.validate_code
                       .notifications.messages.CODE_OK
                 });
-                refetch();
+                history.push("/");
                 setSubmitting(loading);
-                onCancel();
               })
               .catch(error => Notify({ error }));
           }}
@@ -59,15 +60,9 @@ export default ({ onCancel, refetch }) => (
                     type="number"
                     margin="dense"
                     required
+                    fullWidth
                   />
-                  <Grid container justify="space-around">
-                    <Button
-                      onClick={() => onCancel()}
-                      variant="contained"
-                      color="default"
-                    >
-                      {Meteor.settings.public.forms.commons.CANCEL_BTN_LBL}
-                    </Button>
+                  <Grid container justify="center">
                     <Button variant="contained" color="secondary" type="submit">
                       {Meteor.settings.public.forms.commons.SUBMIT_BTN_LBL}
                     </Button>

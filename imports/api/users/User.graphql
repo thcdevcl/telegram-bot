@@ -11,6 +11,7 @@ type TelegramAPP {
   api_id: String
   api_hash: String
   phone: String
+  session_string: String
 }
 
 type Message {

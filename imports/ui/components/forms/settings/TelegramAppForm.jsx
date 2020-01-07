@@ -2,6 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Formik } from "formik";
 import { Mutation } from "react-apollo";
+import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import { Button, Grid, TextField, Typography } from "@material-ui/core";
@@ -26,6 +27,7 @@ const validationSchema = Yup.object().shape({
 export default ({ toggable, onCancel }) => (
   <Mutation mutation={SET_PROFILE_APP} refetchQueries={["currentUser"]}>
     {(setProfileApp, { error, loading }) => {
+      const history = useHistory();
       if (loading) return <Spinner />;
       if (error) return `error: ${error}`;
       return (
@@ -38,6 +40,7 @@ export default ({ toggable, onCancel }) => (
               .then(() => {
                 onCancel();
                 Notify({ message: "Profile updated" });
+                history.push(Meteor.settings.public.router.index.PATH);
               })
               .catch(error => Notify({ error }));
           }}
@@ -49,7 +52,7 @@ export default ({ toggable, onCancel }) => (
                 <Grid container justify="center" style={{ marginBottom: 16 }}>
                   <Grid item xs={6}>
                     <Typography variant="caption" align="center">
-                      Add your Telegram APP credentials
+                      Telegram Credentials
                     </Typography>
                     <TextField
                       variant="outlined"

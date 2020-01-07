@@ -17,8 +17,8 @@ import Helmet from "../utils/Helmet";
 
 import Navigation from "../../layouts/NavigationLayout";
 
-import TelethonAPI from "../../components/cards/TelethonAPICard";
 import TelegramApp from "../forms/settings/TelegramAppForm";
+import ValidateCode from "../forms/telethon/ValidateCodeForm";
 
 const styles = theme => ({
   main: {
@@ -71,7 +71,12 @@ function PrivateRoute({
     <GlobalContextConsumer>
       {({ currentUser, telethonapi }) => {
         if (!currentUser) return <Redirect to="/" />;
-        const { api_id, api_hash, phone } = currentUser.profile.app;
+        const {
+          api_id,
+          api_hash,
+          phone,
+          session_string
+        } = currentUser.profile.app;
         const { authorized, connected } = telethonapi;
         return (
           <Route exact={exact} path={path}>
@@ -81,41 +86,25 @@ function PrivateRoute({
                 setState(prevState => ({ ...prevState, open: !open }))
               }
             />
-            {api_id.length > 0 &&
-              api_hash.length > 0 &&
-              phone.length > 0 &&
-              authorized &&
-              connected && (
-                <main
-                  className={classNames(
-                    classes.main,
-                    md && open && classes.open
-                  )}
-                >
-                  {React.createElement(component)}
-                </main>
-              )}
+            {authorized && connected && (
+              <main
+                className={classNames(classes.main, md && open && classes.open)}
+              >
+                {React.createElement(component)}
+              </main>
+            )}
             <Dialog
-              open={
-                (api_id.length == 0 &&
-                  api_hash.length == 0 &&
-                  phone.length == 0) ||
-                !authorized ||
-                !connected
-              }
+              open={!authorized || !connected || session_string.length == 0}
               disableBackdropClick
               maxWidth="sm"
               fullWidth
             >
-              {api_id.length == 0 &&
-                api_hash.length == 0 &&
-                phone.length == 0 &&
-                authorized &&
-                connected && <DialogTitle>Telegram APP</DialogTitle>}
+              <DialogTitle>Telegram APP</DialogTitle>
               <DialogContent>
                 {api_id.length == 0 &&
                 api_hash.length == 0 &&
-                phone.length == 0 ? (
+                phone.length == 0 &&
+                session_string.length == 0 ? (
                   <TelegramApp
                     toggable={
                       api_id.length > 0 &&
@@ -125,7 +114,7 @@ function PrivateRoute({
                     onCancel={toggleDialog}
                   />
                 ) : !authorized || !connected ? (
-                  <TelethonAPI />
+                  <ValidateCode />
                 ) : null}
               </DialogContent>
             </Dialog>

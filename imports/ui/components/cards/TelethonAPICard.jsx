@@ -18,8 +18,6 @@ import Notify from "../../../modules/notification";
 
 import Spinner from "../utils/Spinner";
 
-import ValidateCode from "../forms/telethon/ValidateCodeForm";
-
 const useStyles = makeStyles(theme => ({
   card: { height: "100%" },
   row: { padding: 4 }
@@ -189,14 +187,6 @@ export default () => {
                 )}
               </Grid>
             </Grid>
-            <Dialog open={dialog} onClose={toggleDialog} disableBackdropClick>
-              <DialogTitle>
-                {Meteor.settings.public.dashboard.telethon_api.DIALOG_TITLE}
-              </DialogTitle>
-              <DialogContent>
-                <ValidateCode onCancel={toggleDialog} refetch={refetch} />
-              </DialogContent>
-            </Dialog>
           </Grid>
         );
       }}
