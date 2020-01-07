@@ -1,0 +1,19 @@
+type Group {
+  _id: String
+  id: ID
+  title: String
+  participants: [Participant]
+}
+
+input GroupInput {
+  title: String!
+}
+
+extend type Query {
+  group(id: ID!): Group
+}
+
+extend type Mutation {
+  createGroup(group: GroupInput!): Group
+  addMember(id: ID!, target: ID!): Group
+}

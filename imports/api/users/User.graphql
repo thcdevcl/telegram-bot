@@ -1,0 +1,63 @@
+type User {
+  _id: ID
+  profile: Profile
+}
+
+type Profile {
+  app: TelegramAPP
+}
+
+type TelegramAPP {
+  api_id: String
+  api_hash: String
+  phone: String
+  session_string: String
+}
+
+type Message {
+  sent: Boolean
+}
+
+type Participant {
+  id: ID
+  username: String
+  first_name: String
+  last_name: String
+}
+
+type GroupCount {
+  telegram: Int
+  custom: Int
+}
+
+type Client {
+  authorized: Boolean
+  connected: Boolean
+  groupCount: GroupCount
+  groups: [Group]
+}
+
+type Query {
+  currentUser: User
+  checkClient: Client
+  customGroups: [Group]
+}
+
+input TelegramAppInput {
+  api_id: String!
+  api_hash: String!
+  phone: String!
+}
+
+input BulkMessageInput {
+  ids: [ID]!
+  message: String!
+}
+
+type Mutation {
+  connectClient: Client
+  sendCode: Client
+  validateCode(code: Int!): Client
+  sendBulkMessage(bulk: BulkMessageInput!): Message
+  setProfileApp(app: TelegramAppInput!): User
+}

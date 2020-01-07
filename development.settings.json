@@ -1,0 +1,155 @@
+{
+  "public": {
+    "app": {
+      "NAME_SHORT": "11Bot"
+    },
+    "router": {
+      "index": {
+        "PATH": "/",
+        "home": {
+          "TITLE": "Dashboard",
+          "NAME": "home-page",
+          "CONTENT": "dashboard"
+        },
+        "TITLE": "Index",
+        "NAME": "index-page",
+        "CONTENT": "landing-page"
+      },
+      "not_found": {
+        "TITLE": "404"
+      },
+      "sign_in": {
+        "PATH": "/signin",
+        "TITLE": "Sign In",
+        "NAME": "signin-page",
+        "CONTENT": "signin-page"
+      },
+      "groups": {
+        "PATH": "/groups",
+        "TITLE": "Groups",
+        "NAME": "groups-page",
+        "CONTENT": "groups-page",
+        "view": {
+          "PATH": "/groups/:id",
+          "TITLE": "Group",
+          "NAME": "group-page",
+          "CONTENT": "group-page"
+        }
+      },
+      "participants": {
+        "PATH": "/participants",
+        "TITLE": "Participants",
+        "NAME": "participants-page",
+        "CONTENT": "participants-page",
+        "view": {
+          "PATH": "/participants/:id"
+        }
+      },
+      "settings": {
+        "PATH": "/settings",
+        "TITLE": "Settings",
+        "NAME": "settings-page",
+        "CONTENT": "settings-page"
+      }
+    },
+    "forms": {
+      "commons": {
+        "CANCEL_BTN_LBL": "Cancel",
+        "SUBMIT_BTN_LBL": "Submit"
+      },
+      "accounts": {
+        "signin": {
+          "HEADLINE": "Login",
+          "fields": {
+            "TEXT": [
+              {
+                "id": "email",
+                "label": "E-mail",
+                "name": "email",
+                "placeholder": "your@email.com",
+                "type": "email"
+              },
+              {
+                "id": "password",
+                "label": "Password",
+                "name": "password",
+                "placeholder": "",
+                "type": "password"
+              }
+            ]
+          },
+          "SUBMIT_BTN_LBL": "Enter"
+        },
+        "signup": {
+          "HEADLINE": "Create Account",
+          "fields": {
+            "TEXT": [
+              {
+                "id": "email",
+                "label": "E-mail",
+                "name": "email",
+                "placeholder": "your@email.com",
+                "type": "email"
+              },
+              {
+                "id": "password",
+                "label": "Password",
+                "name": "password",
+                "placeholder": "",
+                "type": "password"
+              }
+            ]
+          }
+        }
+      },
+      "telethon": {
+        "validate_code": {
+          "notifications": {
+            "messages": {
+              "CODE_OK": "Signed In"
+            }
+          }
+        }
+      }
+    },
+    "dashboard": {
+      "telethon_api": {
+        "HEADLINE": "TelethonAPI",
+        "SUBTITLE": "URL: localhost:8000",
+        "TELEGRAM": "Telegram",
+        "TELEGRAM_STATUS_CONNECTED": "Connected",
+        "TELEGRAM_AUTH": "Client",
+        "TELEGRAM_CLIENT_AUTHORIZED": "Authorized",
+        "DIALOG_TITLE": "Validate Code",
+        "SEND_BTN_LBL": "Send Code",
+        "CONNECT_BTN_LBL": "Connect",
+        "notifications": {
+          "messages": {
+            "CODE_SENT": "Code Sent",
+            "CLIENT_CONNECTED": "Connected"
+          }
+        }
+      },
+      "groups": {
+        "HEADLINE": "Groups",
+        "HEADLINE_SHORT": "Groups",
+        "ACTION_BTN_LBL": "Whisper Group"
+      }
+    },
+    "pages": {
+      "groups": {
+        "HEADLINE": "Groups"
+      }
+    }
+  },
+  "private": {
+    "services": {
+      "telethon_api": {
+        "BASE_URL": "http://127.0.0.1:8000/"
+      },
+      "telegram_bot_api": {
+        "BASE_URL": "https://api.telegram.org/bot970344270:AAHrjvY3y13TGGVbqq8ab_mbRA_l3xjiJiA/"
+      }
+    }
+  }
+}
