@@ -7,19 +7,23 @@ export default {
   Client: {
     groups: async (obj, args, { dataSources, user }) => {
       const { api_hash, api_id, session_string } = user.profile.app;
-      const groups = await dataSources.TelethonAPI.getDialogs(
-        api_hash,
+      const res = await dataSources.TelethonAPI.getDialogs(
         api_id,
-        session_string,
-        user._id
+        api_hash,
+        session_string
       );
       const customGroups = Groups.find({ owner: user._id }).fetch();
-      return groups.concat(customGroups);
+      return res.data.concat(customGroups);
     },
     groupCount: async (obj, args, { user, dataSources }) => {
-      const res = await dataSources.TelethonAPI.getDialogs();
+      const { api_hash, api_id, session_string } = user.profile.app;
+      const res = await dataSources.TelethonAPI.getDialogs(
+        api_id,
+        api_hash,
+        session_string
+      );
       return {
-        telegram: res.length,
+        telegram: res.data.length,
         custom: Groups.find({ owner: user._id }).fetch().length
       };
     }
@@ -27,15 +31,35 @@ export default {
   Query: {
     currentUser: (obj, arg, { user }) => user,
     checkClient: async (obj, args, { dataSources, user }) => {
-      const { api_id, api_hash, session_string } = user.profile.app;
-      return session_string
-        ? await dataSources.TelethonAPI.checkClient(
-            api_id,
-            api_hash,
-            session_string,
-            user._id
-          )
-        : { connected: false, authorized: false };
+      const { api_id, api_hash, phone, session_string } = user.profile.app;
+      if (session_string) {
+        const res = await dataSources.TelethonAPI.checkClient(
+          api_id,
+          api_hash,
+          session_string,
+          user._id
+        );
+        const { authorized, connected } = res.data;
+        Meteor.users.update(
+          { _id: user._id },
+          {
+            $set: {
+              "profile.app": {
+                api_id,
+                api_hash,
+                phone,
+                session_string: res.data.session_string
+              }
+            }
+          }
+        );
+        return {
+          authorized,
+          connected,
+          session_string: res.data.session_string
+        };
+      }
+      return { connected: false, authorized: false };
     },
     customGroups: (obj, args, { user }) =>
       Groups.find({ owner: user._id }).fetch()
@@ -48,10 +72,12 @@ export default {
       return { connected: true };
     },
     validateCode: async (obj, { code }, { dataSources, user }) => {
-      const { phone } = user.profile.app;
-      const res = await dataSources.TelethonAPI.verifyCode(
-        code,
+      const { phone, api_id, api_hash } = user.profile.app;
+      const res = await dataSources.TelethonAPI.signinClient(
+        api_id,
+        api_hash,
         phone,
+        code,
         user._id
       );
       return { connected: true };
@@ -73,14 +99,15 @@ export default {
         api_id,
         api_hash,
         phone,
+        "",
         user._id
       );
-      console.log(res);
+      const { session_string } = res.data;
       return Meteor.users.update(
         { _id: user._id },
         {
           $set: {
-            "profile.app": { ...app, session_string: res.session_string }
+            "profile.app": { ...app, session_string }
           }
         }
       );

@@ -10,7 +10,7 @@ class TelethonAPI extends RESTDataSource {
     return await this.get("connect");
   }
 
-  async checkClient(api_id, api_hash, session_string, uid) {
+  async checkClient(api_id, api_hash, session_string) {
     return await HTTP.get(
       Meteor.settings.private.services.telethon_api.BASE_URL + `check`,
       {
@@ -23,22 +23,24 @@ class TelethonAPI extends RESTDataSource {
     );
   }
 
-  async getDialogs(api_id, api_hash, session_string, uid) {
-    return await this.get("get-dialogs", {
-      api_id,
-      api_hash,
-      session_string,
-      uid: "",
-      code: "",
-      phone: ""
-    });
+  async getDialogs(api_id, api_hash, session_string) {
+    return await HTTP.get(
+      Meteor.settings.private.services.telethon_api.BASE_URL + `get-dialogs`,
+      {
+        headers: {
+          "api-id": api_id,
+          "api-hash": api_hash,
+          "session-string": session_string
+        }
+      }
+    );
   }
 
   async sendCode() {
     return await this.get("send-code");
   }
 
-  async signinClient(api_id, api_hash, phone, uid) {
+  async signinClient(api_id, api_hash, phone, code, uid) {
     return await HTTP.get(
       Meteor.settings.private.services.telethon_api.BASE_URL + `sign-in`,
       {
@@ -46,14 +48,25 @@ class TelethonAPI extends RESTDataSource {
           "api-id": api_id,
           "api-hash": api_hash,
           phone: phone,
-          uid: uid
+          uid: uid,
+          code: code
         }
       }
     );
   }
 
-  async getEntity(id) {
-    return await this.get(`get-entity/${id}`);
+  async getEntity(id, api_id, api_hash, session_string) {
+    return await HTTP.get(
+      Meteor.settings.private.services.telethon_api.BASE_URL + `get-entity`,
+      {
+        headers: {
+          "api-id": api_id,
+          "api-hash": api_hash,
+          "session-string": session_string,
+          "entity-id": id
+        }
+      }
+    );
   }
 
   async getParticipants(id) {

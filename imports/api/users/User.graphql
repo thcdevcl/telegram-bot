@@ -33,6 +33,7 @@ type GroupCount {
 type Client {
   authorized: Boolean
   connected: Boolean
+  session_string: String
   groupCount: GroupCount
   groups: [Group]
 }

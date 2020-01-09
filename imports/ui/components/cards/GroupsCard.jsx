@@ -46,7 +46,6 @@ const GROUP_COUNT = gql`
 `;
 
 function GroupsCard({ groupCount }) {
-  console.log(groupCount);
   const classes = useStyles();
   const [state, setState] = useState({ hover: false });
   const { hover } = state;

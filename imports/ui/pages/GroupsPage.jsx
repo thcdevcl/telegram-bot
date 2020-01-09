@@ -39,7 +39,7 @@ const GET_GROUPS = gql`
 `;
 
 export default () => (
-  <Query query={GET_GROUPS} fetchPolicy="network-only" pollInterval={1000}>
+  <Query query={GET_GROUPS} fetchPolicy="network-only">
     {({ error, loading, data }) => {
       if (loading) return <Spinner />;
       if (error) return `Error: ${error}`;

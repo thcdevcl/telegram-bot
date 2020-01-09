@@ -16,11 +16,26 @@ export default {
     }
   },
   Query: {
-    group: async (obj, { id }, { dataSources }) => {
+    group: async (obj, { id }, { dataSources, user }) => {
+      const { api_id, api_hash, session_string } = user.profile.app;
       const customGroup = Groups.findOne({ _id: id });
+      if (!customGroup) {
+        const res = await dataSources.TelethonAPI.getEntity(
+          id,
+          api_id,
+          api_hash,
+          session_string
+        );
+        console.log(res);
+      }
       return customGroup
         ? customGroup
-        : await dataSources.TelethonAPI.getEntity(id);
+        : await dataSources.TelethonAPI.getEntity(
+            id,
+            api_id,
+            api_hash,
+            session_string
+          );
     }
   },
   Mutation: {

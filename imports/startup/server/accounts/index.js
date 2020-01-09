@@ -5,7 +5,8 @@ Accounts.onCreateUser((options, user) => {
   profile.app = {
     api_id: "",
     api_hash: "",
-    phone: ""
+    phone: "",
+    session_string: ""
   };
   user.profile = profile;
   return user;

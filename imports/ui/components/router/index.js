@@ -23,7 +23,9 @@ function Router({ loading, currentUser, checkClient }) {
   console.log(checkClient);
   return (
     <BrowserRouter>
-      <GlobalContextProvider value={{ currentUser, telethonapi: {} }}>
+      <GlobalContextProvider
+        value={{ currentUser, telethonapi: { ...checkClient } }}
+      >
         <ScrollTop>
           <Switch>
             {currentUser ? (
