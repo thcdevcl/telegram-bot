@@ -5,7 +5,7 @@ import { Mutation } from "react-apollo";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Button, Grid, TextField, Typography } from "@material-ui/core";
 
 import Notify from "../../../../modules/notification";
 
@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required("Required field")
 });
 
-export default ({ ids }) => {
+export default ({ ids, onCancel, to }) => {
   const history = useHistory();
   return (
     <Mutation mutation={SEND_BULK_MESSAGE}>
@@ -38,9 +38,9 @@ export default ({ ids }) => {
                 .then(() => {
                   setSubmitting(loading);
                   Notify({
-                    message: `Message sent!`
+                    message: `Message enqueued!`
                   });
-                  history.goBack();
+                  onCancel();
                 })
                 .catch(error => {
                   setSubmitting(false);
@@ -54,6 +54,10 @@ export default ({ ids }) => {
               return (
                 <form onSubmit={handleSubmit}>
                   <Grid container justify="center">
+                    <Typography
+                      variant="subtitle1"
+                      color="primary"
+                    >{`Whisper members of: ${to}`}</Typography>
                     <TextField
                       id="message"
                       margin="dense"
@@ -67,6 +71,16 @@ export default ({ ids }) => {
                       placeholder="Message"
                       required
                     />
+                    <Button
+                      variant="contained"
+                      color="inherit"
+                      onClick={event => {
+                        onCancel();
+                      }}
+                      style={{ marginRight: 8 }}
+                    >
+                      Cancel
+                    </Button>
                     <Button type="submit" variant="contained" color="secondary">
                       Send
                     </Button>

@@ -6,10 +6,6 @@ class TelethonAPI extends RESTDataSource {
     this.baseURL = Meteor.settings.private.services.telethon_api.BASE_URL;
   }
 
-  async connectClient() {
-    return await this.get("connect");
-  }
-
   async checkClient(api_id, api_hash, session_string) {
     return await HTTP.get(
       Meteor.settings.private.services.telethon_api.BASE_URL + `check`,
@@ -34,10 +30,6 @@ class TelethonAPI extends RESTDataSource {
         }
       }
     );
-  }
-
-  async sendCode() {
-    return await this.get("send-code");
   }
 
   async signinClient(api_id, api_hash, phone, code, uid) {
@@ -69,23 +61,23 @@ class TelethonAPI extends RESTDataSource {
     );
   }
 
-  async getParticipants(id) {
-    return await this.get(`get-participants/${id}`);
+  async getParticipants(id, api_id, api_hash, session_string) {
+    return await HTTP.get(
+      Meteor.settings.private.services.telethon_api.BASE_URL +
+        `get-participants`,
+      {
+        headers: {
+          "api-id": api_id,
+          "api-hash": api_hash,
+          "session-string": session_string,
+          "entity-id": id
+        }
+      }
+    );
   }
 
   async sendMessage(dispatch) {
     return await this.post(`send-message`, dispatch);
-  }
-
-  async verifyCode(code, phone, uid, api_hash, api_id) {
-    return await this.get(`verify-code`, {
-      code,
-      phone,
-      uid,
-      api_hash: "",
-      api_id: "",
-      session_string: ""
-    });
   }
 }
 

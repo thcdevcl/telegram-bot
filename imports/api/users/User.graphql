@@ -1,10 +1,17 @@
 type User {
   _id: ID
   profile: Profile
+  groups: [Group]
 }
 
 type Profile {
   app: TelegramAPP
+}
+
+type Group {
+  id: ID
+  title: String
+  participantids: [Int]
 }
 
 type TelegramAPP {
@@ -18,30 +25,15 @@ type Message {
   sent: Boolean
 }
 
-type Participant {
-  id: ID
-  username: String
-  first_name: String
-  last_name: String
-}
-
-type GroupCount {
-  telegram: Int
-  custom: Int
-}
-
 type Client {
   authorized: Boolean
   connected: Boolean
   session_string: String
-  groupCount: GroupCount
-  groups: [Group]
 }
 
 type Query {
   currentUser: User
   checkClient: Client
-  customGroups: [Group]
 }
 
 input TelegramAppInput {
@@ -56,9 +48,6 @@ input BulkMessageInput {
 }
 
 type Mutation {
-  connectClient: Client
-  sendCode: Client
-  validateCode(code: Int!): Client
   sendBulkMessage(bulk: BulkMessageInput!): Message
   setProfileApp(app: TelegramAppInput!): User
 }
