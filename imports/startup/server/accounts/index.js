@@ -8,6 +8,7 @@ Accounts.onCreateUser((options, user) => {
     phone: "",
     session_string: ""
   };
+  profile.limit = 100;
   user.profile = profile;
   return user;
 });

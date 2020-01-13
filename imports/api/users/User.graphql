@@ -22,7 +22,7 @@ type TelegramAPP {
 }
 
 type Message {
-  sent: Boolean
+  enqueued: Boolean
 }
 
 type Client {
@@ -42,12 +42,13 @@ input TelegramAppInput {
   phone: String!
 }
 
-input BulkMessageInput {
+input DispatchInput {
   ids: [ID]!
   message: String!
 }
 
 type Mutation {
-  sendBulkMessage(bulk: BulkMessageInput!): Message
+  enqueueMessage(dispatch: DispatchInput!): Message
   setProfileApp(app: TelegramAppInput!): User
+  validateCode(code: Int!): Client
 }

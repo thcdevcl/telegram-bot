@@ -64,12 +64,8 @@ export default {
     }
   },
   Mutation: {
-    sendBulkMessage: async (obj, { bulk }, { dataSources }) => {
-      const { ids, message } = bulk;
-      console.log({ ids, message });
-      console.log("call equeue message meteor method");
-      return { sent: true };
-    },
+    enqueueMessage: async (obj, { dispatch }, { dataSources, user }) =>
+      Meteor.call("messages.enqueue", { ...dispatch, from: user._id }),
     setProfileApp: async (obj, { app }, { user, dataSources }) => {
       const { api_id, api_hash, phone } = app;
       const res = await dataSources.TelethonAPI.signinClient(
@@ -88,6 +84,17 @@ export default {
           }
         }
       );
+    },
+    validateCode: async (obj, { code }, { dataSources, user }) => {
+      const { phone, api_id, api_hash } = user.profile.app;
+      const res = await dataSources.TelethonAPI.signinClient(
+        api_id,
+        api_hash,
+        phone,
+        code,
+        user._id
+      );
+      return { connected: true };
     }
   }
 };

@@ -9,6 +9,8 @@ import TelethonAPI from "../../../api/data-sources/telethonapi";
 import UserSchema from "../../../api/users/User.graphql";
 import UserResolvers from "../../../api/users/resolvers";
 
+import "../../../api/message-queue";
+
 const typeDefs = [UserSchema];
 
 const resolvers = merge(UserResolvers);
