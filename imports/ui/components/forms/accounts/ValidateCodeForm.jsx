@@ -23,7 +23,7 @@ const formSchema = Yup.object().shape({
   code: Yup.number().required("Required field")
 });
 
-export default ({ api_id, api_hash, phone }) => (
+export default ({ api_id, api_hash, phone, refetch }) => (
   <Mutation mutation={VALIDATE_CODE}>
     {(validateCode, { error, loading }) => {
       const history = useHistory();
@@ -44,9 +44,9 @@ export default ({ api_id, api_hash, phone }) => (
                     Meteor.settings.public.forms.telethon.validate_code
                       .notifications.messages.CODE_OK
                 });
-                history.push("/");
                 setSubmitting(loading);
               })
+              .then(refetch())
               .catch(error => Notify({ error }));
           }}
         >

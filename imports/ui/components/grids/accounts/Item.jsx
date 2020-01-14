@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ account }) => {
+export default ({ account, refetch }) => {
   const classes = useStyles();
   const history = useHistory();
   const { authorized, connected } = account.telethon;
@@ -32,7 +32,9 @@ export default ({ account }) => {
       }
     >
       <Typography variant="subtitle1">{account.name}</Typography>
-      {!authorized && connected && <ValidateCode {...account} />}
+      {!authorized && connected && (
+        <ValidateCode {...account} refetch={refetch} />
+      )}
     </Grid>
   );
 };

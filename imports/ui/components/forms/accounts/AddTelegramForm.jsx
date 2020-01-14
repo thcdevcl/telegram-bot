@@ -25,10 +25,9 @@ const validationSchema = Yup.object().shape({
   phone: Yup.string().required("Required field")
 });
 
-export default ({ toggable, onCancel }) => (
+export default ({ toggable, onCancel, refetch }) => (
   <Mutation mutation={CREATE_TELEGRAM_ACCOUNT} refetchQueries={["currentUser"]}>
     {(createTelegramAccount, { error, loading }) => {
-      const history = useHistory();
       if (loading) return <Spinner />;
       if (error) return `error: ${error}`;
       return (
@@ -43,6 +42,7 @@ export default ({ toggable, onCancel }) => (
                 Notify({
                   message: `Account created!`
                 });
+                refetch();
                 onCancel();
               })
               .catch(error => {
