@@ -21,13 +21,6 @@ Profiles.schema = new SimpleSchema({
     optional: false,
     label: "The _id of user who created this document."
   },
-  userid: {
-    type: String,
-    autoValue() {
-      if (this.isInsert) return "";
-    },
-    label: "Telegram user id."
-  },
   createdAt: {
     type: String,
     label: "The date this document was created.",

@@ -72,7 +72,6 @@ export default () => (
     {({ loading, error, data, refetch }) => {
       if (loading) return <Spinner />;
       if (error) return `Error: ${error}`;
-      console.log(data);
       const { accounts } = data.currentUser;
       return (
         <Accounts

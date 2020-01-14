@@ -26,7 +26,6 @@ const formSchema = Yup.object().shape({
 export default ({ api_id, api_hash, phone, refetch }) => (
   <Mutation mutation={VALIDATE_CODE}>
     {(validateCode, { error, loading }) => {
-      const history = useHistory();
       return (
         <Formik
           initialValues={{ code: "" }}

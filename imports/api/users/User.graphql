@@ -7,7 +7,6 @@ type User {
 type Profile {
   _id: ID
   owner: ID
-  userid: String
   role: String
   fullName: String
   avatar: String
