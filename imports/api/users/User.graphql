@@ -1,11 +1,34 @@
 type User {
   _id: ID
   profile: Profile
-  groups: [Group]
+  accounts: [TelegramAccount]
 }
 
 type Profile {
-  app: TelegramAPP
+  _id: ID
+  owner: ID
+  userid: String
+  role: String
+  fullName: String
+  avatar: String
+  limit: Int
+}
+
+type TelegramAccount {
+  _id: ID
+  owner: ID
+  name: String
+  api_id: Int
+  api_hash: String
+  phone: String
+  groups: [Group]
+  session_string: String
+  telethon: Telethon
+}
+
+type Telethon {
+  authorized: Boolean
+  connected: Boolean
 }
 
 type Group {
@@ -14,29 +37,17 @@ type Group {
   participantids: [Int]
 }
 
-type TelegramAPP {
-  api_id: String
-  api_hash: String
-  phone: String
-  session_string: String
-}
-
 type Message {
   enqueued: Boolean
 }
 
-type Client {
-  authorized: Boolean
-  connected: Boolean
-  session_string: String
-}
-
 type Query {
   currentUser: User
-  checkClient: Client
+  account(_id: ID!): TelegramAccount
 }
 
-input TelegramAppInput {
+input TelegramAccountInput {
+  name: String!
   api_id: String!
   api_hash: String!
   phone: String!
@@ -47,8 +58,15 @@ input DispatchInput {
   message: String!
 }
 
+input ValidateCodeInput {
+  api_id: String!
+  api_hash: String!
+  phone: String!
+  code: Int!
+}
+
 type Mutation {
   enqueueMessage(dispatch: DispatchInput!): Message
-  setProfileApp(app: TelegramAppInput!): User
-  validateCode(code: Int!): Client
+  createTelegramAccount(account: TelegramAccountInput!): User
+  validateCode(account: ValidateCodeInput!): User
 }

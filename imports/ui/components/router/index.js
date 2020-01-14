@@ -8,7 +8,8 @@ import { GlobalContextProvider } from "../../../startup/client/App";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 
-import Groups from "../../pages/GroupsPage";
+import Account from "../../pages/AccountPage";
+import Dashboard from "../../pages/DashboardPage";
 import Index from "../../pages/IndexPage";
 import Settings from "../../pages/SettingsPage";
 import NotFound from "../../pages/NotFoundPage";
@@ -27,7 +28,7 @@ function Router({ loading, currentUser, checkClient }) {
             {currentUser ? (
               <PrivateRoute
                 exact
-                component={Groups}
+                component={Dashboard}
                 path={Meteor.settings.public.router.index.PATH}
                 title={Meteor.settings.public.router.index.home.TITLE}
                 content={Meteor.settings.public.router.index.home.CONTENT}
@@ -43,6 +44,14 @@ function Router({ loading, currentUser, checkClient }) {
                 name={Meteor.settings.public.router.index.NAME}
               />
             )}
+            <PrivateRoute
+              exact
+              component={Account}
+              path={`${Meteor.settings.public.router.accounts.PATH}/:_id`}
+              title={Meteor.settings.public.router.accounts.TITLE}
+              content={Meteor.settings.public.router.accounts.CONTENT}
+              name={Meteor.settings.public.router.accounts.NAME}
+            />
             <PrivateRoute
               exact
               component={Settings}
@@ -63,19 +72,6 @@ const CURRENT_USER = gql`
   query currentUser {
     currentUser {
       _id
-      profile {
-        app {
-          api_id
-          api_hash
-          phone
-          session_string
-        }
-      }
-    }
-    checkClient {
-      connected
-      authorized
-      session_string
     }
   }
 `;

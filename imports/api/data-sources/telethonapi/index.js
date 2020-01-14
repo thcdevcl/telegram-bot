@@ -32,7 +32,7 @@ class TelethonAPI extends RESTDataSource {
     );
   }
 
-  async signinClient(api_id, api_hash, phone, code, uid) {
+  async signinClient(api_id, api_hash, phone, uid, code = "") {
     return await HTTP.get(
       Meteor.settings.private.services.telethon_api.BASE_URL + `sign-in`,
       {

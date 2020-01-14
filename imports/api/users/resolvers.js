@@ -1,8 +1,18 @@
+import Profiles from "../profiles/Profiles";
+import TelegramAccounts from "../telegram-accounts/TelegramAccounts";
+
 export default {
   User: {
-    profile: (obj, args, { user }) => user.profile,
-    groups: async (obj, args, { user, dataSources }) => {
-      const { api_hash, api_id, session_string } = user.profile.app;
+    accounts: ({ _id }, args, ctx) =>
+      TelegramAccounts.find({ owner: _id }).fetch(),
+    profile: ({ _id }, args, ctx) => Profiles.findOne({ owner: _id })
+  },
+  TelegramAccount: {
+    groups: async (
+      { api_id, api_hash, session_string },
+      args,
+      { user, dataSources }
+    ) => {
       const { data } = await dataSources.TelethonAPI.getDialogs(
         api_id,
         api_hash,
@@ -25,14 +35,13 @@ export default {
             });
         } catch (e) {}
       }
-      // returns group with participant ids
       return groups;
-    }
-  },
-  Query: {
-    currentUser: (obj, arg, { user }) => user,
-    checkClient: async (obj, args, { dataSources, user }) => {
-      const { api_id, api_hash, phone, session_string } = user.profile.app;
+    },
+    telethon: async (
+      { api_id, api_hash, session_string },
+      args,
+      { user, dataSources }
+    ) => {
       if (session_string) {
         const res = await dataSources.TelethonAPI.checkClient(
           api_id,
@@ -41,60 +50,44 @@ export default {
           user._id
         );
         const { authorized, connected } = res.data;
-        Meteor.users.update(
-          { _id: user._id },
-          {
-            $set: {
-              "profile.app": {
-                api_id,
-                api_hash,
-                phone,
-                session_string: res.data.session_string
-              }
-            }
-          }
-        );
         return {
           authorized,
-          connected,
-          session_string: res.data.session_string
+          connected
         };
       }
-      return { connected: false, authorized: false };
+      return { authorized: false, connected: false };
     }
+  },
+  Query: {
+    currentUser: (obj, arg, { user }) => user,
+    account: (obj, { _id }, { user }) => TelegramAccounts.findOne({ _id })
   },
   Mutation: {
     enqueueMessage: async (obj, { dispatch }, { dataSources, user }) =>
       Meteor.call("messages.enqueue", { ...dispatch, from: user._id }),
-    setProfileApp: async (obj, { app }, { user, dataSources }) => {
-      const { api_id, api_hash, phone } = app;
+    createTelegramAccount: async (obj, { account }, { user, dataSources }) => {
       const res = await dataSources.TelethonAPI.signinClient(
-        api_id,
-        api_hash,
-        phone,
-        "",
+        account.api_id,
+        account.api_hash,
+        account.phone,
         user._id
       );
-      const { session_string } = res.data;
-      return Meteor.users.update(
-        { _id: user._id },
-        {
-          $set: {
-            "profile.app": { ...app, session_string }
-          }
-        }
-      );
+      const _id = TelegramAccounts.insert({
+        ...account,
+        owner: user._id,
+        session_string: res.data.session_string
+      });
+      return user;
     },
-    validateCode: async (obj, { code }, { dataSources, user }) => {
-      const { phone, api_id, api_hash } = user.profile.app;
+    validateCode: async (obj, { account }, { dataSources, user }) => {
       const res = await dataSources.TelethonAPI.signinClient(
-        api_id,
-        api_hash,
-        phone,
-        code,
-        user._id
+        account.api_id,
+        account.api_hash,
+        account.phone,
+        user._id,
+        account.code
       );
-      return { connected: true };
+      return user;
     }
   }
 };

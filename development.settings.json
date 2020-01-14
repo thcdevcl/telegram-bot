@@ -15,6 +15,12 @@
         "NAME": "index-page",
         "CONTENT": "landing-page"
       },
+      "accounts": {
+        "PATH": "/accounts",
+        "TITLE": "Telegram Account",
+        "NAME": "account-page",
+        "CONTENT": "account-page"
+      },
       "not_found": {
         "TITLE": "404"
       },
