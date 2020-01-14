@@ -8,7 +8,7 @@ import {
   Typography,
   useMediaQuery
 } from "@material-ui/core";
-import { Message } from "@material-ui/icons";
+import Message from "@material-ui/icons/Message";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import MessageForm from "../../forms/groups/MessageForm";

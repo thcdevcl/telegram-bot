@@ -10,13 +10,14 @@ import {
   List,
   useMediaQuery
 } from "@material-ui/core";
-import {
-  Dashboard,
-  ChevronLeft,
-  ChevronRight,
-  ExitToApp,
-  SettingsApplications
-} from "@material-ui/icons";
+
+
+import Dashboard from "@material-ui/icons/Dashboard";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import ChevronRight from "@material-ui/icons/ChevronRight";
+import ExitToApp from "@material-ui/icons/ExitToApp";
+import SettingsApplications from "@material-ui/icons/SettingsApplications";
+
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import { GlobalContextConsumer } from "../../../../startup/client/App";

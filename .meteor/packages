@@ -22,9 +22,5 @@ swydo:ddp-apollo
 swydo:graphql
 accounts-password@1.5.2
 aldeed:collection2-core@2.0.0
-<<<<<<< HEAD
-http
 msavin:sjobs
-=======
 http@1.4.2
->>>>>>> a68691e4b4a5881dae0050006c96f260ac728c21
