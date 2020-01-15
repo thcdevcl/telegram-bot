@@ -1,33 +1,41 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
 
-const Queue = new Mongo.Collection("queue");
+const Messages = new Mongo.Collection("messages");
 
-Queue.allow({
+Messages.allow({
   insert: () => false,
   update: () => false,
   remove: () => false
 });
 
-Queue.deny({
+Messages.deny({
   insert: () => true,
   update: () => true,
   remove: () => true
 });
 
-Queue.schema = new SimpleSchema({
+Messages.schema = new SimpleSchema({
+  status: {
+    type: Boolean,
+    optional: false,
+    label: "Active",
+    autoValue() {
+      if (this.isInsert) return true;
+    }
+  },
   sent: {
     type: Boolean,
+    optional: false,
+    label: "Sent",
     autoValue() {
       if (this.isInsert) return false;
     }
   },
-  sentAt: {
+  owner: {
     type: String,
-    label: "The date this message was sent.",
-    autoValue() {
-      if (this.isInsert) return "";
-    }
+    optional: false,
+    label: "User _id who created this message."
   },
   createdAt: {
     type: String,
@@ -44,23 +52,13 @@ Queue.schema = new SimpleSchema({
       if (this.isInsert || this.isUpdate) return new Date().toISOString();
     }
   },
-  from: {
+  content: {
     type: String,
     optional: false,
-    label: "sender user._id"
-  },
-  to: {
-    type: String,
-    optional: false,
-    label: "telegram user id"
-  },
-  message: {
-    type: String,
-    optional: false,
-    label: "message content"
+    label: "Content"
   }
 });
 
-Queue.attachSchema(Queue.schema);
+Messages.attachSchema(Messages.schema);
 
-export default Queue;
+export default Messages;

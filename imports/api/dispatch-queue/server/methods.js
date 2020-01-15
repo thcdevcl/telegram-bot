@@ -1,14 +1,16 @@
 import { Meteor } from "meteor/meteor";
 
-import MessageQueue from "../Queue";
+import Messages from "../../messages/Messages";
+import DispatchQueue from "../Queue";
 
 Meteor.methods({
   "messages.enqueue"({ ids, message, from }) {
-    const _ids = ids.map(id => MessageQueue.insert({ from, to: id, message }));
+    const messageid = Messages.insert({ owner: from, content: message });
+    const _ids = ids.map(id => DispatchQueue.insert({ to: id, messageid }));
     return { enqueued: ids.length == _ids.length };
   },
   "messages.dispatch"() {
-    const dispatch = MessageQueue.findOne(
+    const dispatch = DispatchQueue.findOne(
       { sent: false },
       { sort: { createdAt: 1 }, limit: 1 }
     );
@@ -35,7 +37,7 @@ Meteor.methods({
       // );
 
       // if res, mark message as sent
-      // const _id = MessageQueue.update(
+      // const _id = DispatchQueue.update(
       //   { _id: dispatch._id },
       //   { $set: { sent: true, sentAt: new Date().toISOString() } }
       // );
