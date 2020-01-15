@@ -14,7 +14,7 @@ function AccountPage({ _id, name, groups }) {
     <Page headline={name}>
       <Grid container justify="center">
         <Grid item xs={12} md={6}>
-          <MessageGroup groups={groups} />
+          <MessageGroup groups={groups} account={_id} />
         </Grid>
       </Grid>
     </Page>

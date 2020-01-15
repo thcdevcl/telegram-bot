@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   buttonContainer: { "&:hover": { cursor: "pointer" } }
 }));
 
-export default ({ groups }) => {
+export default ({ groups, account }) => {
   const classes = useStyles();
   const [state, setState] = useState({ selected: "", button: true });
   const { selected, button } = state;
@@ -58,6 +58,7 @@ export default ({ groups }) => {
             <MessageForm
               onCancel={event => setState({ selected: "", button: !button })}
               ids={groups.find(group => group.id == selected).participantids}
+              account={account}
             />
           )}
         </Grid>
