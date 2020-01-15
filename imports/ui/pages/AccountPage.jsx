@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 
 import { Grid } from "@material-ui/core";
 
-import Group from "../components/lists/groups/Item";
+import MessageGroup from "../components/cards/MessageGroup";
 import Page from "../layouts/PageLayout";
 import Spinner from "../components/utils/Spinner";
 
@@ -14,9 +14,7 @@ function AccountPage({ _id, name, groups }) {
     <Page headline={name}>
       <Grid container justify="center">
         <Grid item xs={12} md={6}>
-          {groups.map(group => (
-            <Group key={group.id} {...group} account={_id} />
-          ))}
+          <MessageGroup groups={groups} />
         </Grid>
       </Grid>
     </Page>

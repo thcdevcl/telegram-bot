@@ -22,7 +22,7 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required("Required field")
 });
 
-export default ({ ids, onCancel, to, account }) => (
+export default ({ ids, onCancel, account }) => (
   <Mutation mutation={ENQUEUE_MESSAGE}>
     {(enqueueMessage, { error, loading }) => {
       return (
@@ -53,10 +53,6 @@ export default ({ ids, onCancel, to, account }) => (
             return (
               <form onSubmit={handleSubmit}>
                 <Grid container justify="center">
-                  <Typography
-                    variant="subtitle1"
-                    color="primary"
-                  >{`Whisper members of: ${to}`}</Typography>
                   <TextField
                     id="message"
                     margin="dense"
