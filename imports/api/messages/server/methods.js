@@ -1,11 +1,15 @@
 import { Meteor } from "meteor/meteor";
 
-import Messages from "../../messages/Messages";
-import DispatchQueue from "../Queue";
+import Messages from "../Messages";
+import DispatchQueue from "../../dispatch-queue/Queue";
 
 Meteor.methods({
-  "messages.enqueue"({ ids, message, from }) {
-    const messageid = Messages.insert({ owner: from, content: message });
+  "messages.enqueue"({ ids, message, from, account }) {
+    const messageid = Messages.insert({
+      owner: from,
+      content: message,
+      accountid: account
+    });
     const _ids = ids.map(id => DispatchQueue.insert({ to: id, messageid }));
     return { enqueued: ids.length == _ids.length };
   },

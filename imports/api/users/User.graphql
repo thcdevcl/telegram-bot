@@ -55,6 +55,7 @@ input TelegramAccountInput {
 input DispatchInput {
   ids: [ID]!
   message: String!
+  account: ID!
 }
 
 input ValidateCodeInput {

@@ -15,7 +15,7 @@ function AccountPage({ _id, name, groups }) {
       <Grid container justify="center">
         <Grid item xs={12} md={6}>
           {groups.map(group => (
-            <Group key={group.id} {...group} />
+            <Group key={group.id} {...group} account={_id} />
           ))}
         </Grid>
       </Grid>

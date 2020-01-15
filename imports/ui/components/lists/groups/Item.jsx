@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default ({ id, title, participantids }) => {
+export default ({ id, title, participantids, account }) => {
   const classes = useStyles();
   const [state, setState] = useState({ hover: false, form: false });
   const { hover, form } = state;
@@ -51,6 +51,7 @@ export default ({ id, title, participantids }) => {
           onCancel={() => toggleForm()}
           ids={participantids}
           to={title}
+          account={account}
         />
       ) : (
         <Grid

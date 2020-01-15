@@ -22,7 +22,7 @@ const validationSchema = Yup.object().shape({
   message: Yup.string().required("Required field")
 });
 
-export default ({ ids, onCancel, to }) => (
+export default ({ ids, onCancel, to, account }) => (
   <Mutation mutation={ENQUEUE_MESSAGE}>
     {(enqueueMessage, { error, loading }) => {
       return (
@@ -31,7 +31,9 @@ export default ({ ids, onCancel, to }) => (
           validationSchema={validationSchema}
           onSubmit={({ message }, { setSubmitting }) => {
             setSubmitting(loading);
-            enqueueMessage({ variables: { dispatch: { ids, message } } })
+            enqueueMessage({
+              variables: { dispatch: { ids, message, account } }
+            })
               .then(() => {
                 setSubmitting(loading);
                 Notify({
