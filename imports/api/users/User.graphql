@@ -23,6 +23,7 @@ type TelegramAccount {
   groups: [Group]
   session_string: String
   telethon: Telethon
+  queue: [Message]
 }
 
 type Telethon {
@@ -37,6 +38,9 @@ type Group {
 }
 
 type Message {
+  to: ID
+  messageid: ID
+  sent: Boolean
   enqueued: Boolean
 }
 

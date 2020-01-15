@@ -1,3 +1,5 @@
+import Messages from "../messages/Messages";
+import Queue from "../dispatch-queue/Queue";
 import Profiles from "../profiles/Profiles";
 import TelegramAccounts from "../telegram-accounts/TelegramAccounts";
 
@@ -56,6 +58,15 @@ export default {
         };
       }
       return { authorized: false, connected: false };
+    },
+    queue: ({ _id }, args, ctx) => {
+      const messages = Messages.find({ accountid: _id, sent: false }).fetch();
+      let dispatches = [];
+      messages.forEach(({ _id }) => {
+        const queue = Queue.find({ messageid: _id, sent: false }).fetch();
+        queue.forEach(q => dispatches.push(q));
+      });
+      return dispatches;
     }
   },
   Query: {
