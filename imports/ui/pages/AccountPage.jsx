@@ -10,18 +10,16 @@ import MessageQueue from "../components/grids/message-queue/Grid";
 import Page from "../layouts/PageLayout";
 import Spinner from "../components/utils/Spinner";
 
-function AccountPage({ _id, name, groups, messages }) {
+function AccountPage({ _id, name, groups }) {
   return (
     <Page headline={name}>
       <Grid container justify="center" spacing={2} style={{ width: "100%" }}>
         <Grid item xs={12} md={9} style={{ marginBottom: 16 }}>
           <MessageGroup groups={groups} account={_id} />
         </Grid>
-        {messages.length > 0 && (
-          <Grid item xs={12} md={9} style={{ marginBottom: 16 }}>
-            <MessageQueue messages={messages} />
-          </Grid>
-        )}
+        <Grid item xs={12} md={9} style={{ marginBottom: 16 }}>
+          <MessageQueue accountid={_id} />
+        </Grid>
       </Grid>
     </Page>
   );
@@ -36,20 +34,6 @@ const GET_ACCOUNT = gql`
         id
         title
         participantids
-      }
-      messages {
-        _id
-        createdAt
-        content
-        status
-        sent
-        queue {
-          _id
-          to
-          messageid
-          sent
-          sentAt
-        }
       }
     }
   }
