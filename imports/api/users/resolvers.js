@@ -59,15 +59,10 @@ export default {
       }
       return { authorized: false, connected: false };
     },
-    queue: ({ _id }, args, ctx) => {
-      const messages = Messages.find({ accountid: _id, sent: false }).fetch();
-      let dispatches = [];
-      messages.forEach(({ _id }) => {
-        const queue = Queue.find({ messageid: _id, sent: false }).fetch();
-        queue.forEach(q => dispatches.push(q));
-      });
-      return dispatches;
-    }
+    messages: ({ _id }, args, ctx) => Messages.find({ accountid: _id }).fetch()
+  },
+  Message: {
+    queue: ({ _id }, args, ctx) => Queue.find({ messageid: _id }).fetch()
   },
   Query: {
     currentUser: (obj, arg, { user }) => user,

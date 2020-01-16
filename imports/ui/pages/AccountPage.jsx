@@ -3,52 +3,23 @@ import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import { useParams } from "react-router-dom";
 
-import {
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography
-} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 import MessageGroup from "../components/cards/MessageGroup";
+import MessageQueue from "../components/grids/message-queue/Grid";
 import Page from "../layouts/PageLayout";
 import Spinner from "../components/utils/Spinner";
 
-function AccountPage({ _id, name, groups, queue }) {
+function AccountPage({ _id, name, groups, messages }) {
   return (
     <Page headline={name}>
       <Grid container justify="center" spacing={2} style={{ width: "100%" }}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={9} style={{ marginBottom: 16 }}>
           <MessageGroup groups={groups} account={_id} />
         </Grid>
-        {queue.length > 0 && (
-          <Grid item xs={12} md={8}>
-            <Typography variant="subtitle1" style={{ fontWeight: 900 }}>
-              For Dispatch
-            </Typography>
-            <Table size="small" aria-label="queue table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>To</TableCell>
-                  <TableCell>Message</TableCell>
-                  <TableCell>Sent</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {queue.map(q => (
-                  <TableRow key={q.to}>
-                    <TableCell component="th" scope="row">
-                      {q.to}
-                    </TableCell>
-                    <TableCell>{q.messageid}</TableCell>
-                    <TableCell>{q.sent.toString()}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+        {messages.length > 0 && (
+          <Grid item xs={12} md={9} style={{ marginBottom: 16 }}>
+            <MessageQueue messages={messages} />
           </Grid>
         )}
       </Grid>
@@ -66,10 +37,19 @@ const GET_ACCOUNT = gql`
         title
         participantids
       }
-      queue {
-        to
-        messageid
+      messages {
+        _id
+        createdAt
+        content
+        status
         sent
+        queue {
+          _id
+          to
+          messageid
+          sent
+          sentAt
+        }
       }
     }
   }
@@ -83,7 +63,6 @@ export default () => {
         if (loading) return <Spinner />;
         if (error) return `Error: ${error}`;
         const { account } = data;
-        console.log(data);
         return <AccountPage {...account} />;
       }}
     </Query>
