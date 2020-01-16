@@ -5,8 +5,8 @@ Accounts.onCreateUser((options, user) => {
   const { role } = options.profile;
   Profiles.insert({
     owner: user._id,
-    role: role ? role : "user",
     limit: 100
   });
+  Roles.addUsersToRoles(user._id, role ? role : "user");
   return user;
 });

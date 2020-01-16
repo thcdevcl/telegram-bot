@@ -72,6 +72,9 @@ const CURRENT_USER = gql`
   query currentUser {
     currentUser {
       _id
+      profile {
+        role
+      }
     }
   }
 `;

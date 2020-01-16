@@ -36,11 +36,6 @@ Profiles.schema = new SimpleSchema({
       if (this.isInsert || this.isUpdate) return new Date().toISOString();
     }
   },
-  role: {
-    type: String,
-    optional: false,
-    label: "Role"
-  },
   fullName: {
     type: String,
     autoValue() {

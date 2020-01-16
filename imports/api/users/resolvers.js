@@ -64,6 +64,13 @@ export default {
   Message: {
     queue: ({ _id }, args, ctx) => Queue.find({ messageid: _id }).fetch()
   },
+  Profile: {
+    role: (obj, args, { user }) =>
+      Meteor.roleAssignment
+        .find({ "user._id": user._id })
+        .fetch()
+        .pop().role._id
+  },
   Query: {
     currentUser: (obj, arg, { user }) => user,
     account: (obj, { _id }, { user }) => TelegramAccounts.findOne({ _id })
