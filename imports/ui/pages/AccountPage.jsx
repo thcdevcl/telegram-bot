@@ -58,7 +58,11 @@ const GET_ACCOUNT = gql`
 export default () => {
   const params = useParams();
   return (
-    <Query query={GET_ACCOUNT} variables={{ _id: params._id }}>
+    <Query
+      query={GET_ACCOUNT}
+      variables={{ _id: params._id }}
+      fetchPolicy="network-only"
+    >
       {({ loading, error, data }) => {
         if (loading) return <Spinner />;
         if (error) return `Error: ${error}`;
