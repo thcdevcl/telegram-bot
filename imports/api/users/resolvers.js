@@ -59,7 +59,8 @@ export default {
       }
       return { authorized: false, connected: false };
     },
-    messages: ({ _id }, args, ctx) => Messages.find({ accountid: _id }).fetch()
+    messages: ({ _id }, args, ctx) =>
+      Messages.find({ accountid: _id }, { sort: { createdAt: -1 } }).fetch()
   },
   Message: {
     queue: ({ _id }, args, ctx) => Queue.find({ messageid: _id }).fetch(),
