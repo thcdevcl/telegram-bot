@@ -1,0 +1,89 @@
+type User {
+  _id: ID
+  profile: Profile
+  accounts: [TelegramAccount]
+}
+
+type Profile {
+  _id: ID
+  owner: ID
+  role: String
+  fullName: String
+  avatar: String
+  limit: Int
+}
+
+type TelegramAccount {
+  _id: ID
+  owner: ID
+  name: String
+  api_id: Int
+  api_hash: String
+  phone: String
+  groups: [Group]
+  session_string: String
+  telethon: Telethon
+  messages: [Message]
+}
+
+type Telethon {
+  authorized: Boolean
+  connected: Boolean
+}
+
+type Group {
+  id: ID
+  title: String
+  participantids: [Int]
+}
+
+type Message {
+  _id: ID
+  createdAt: String
+  owner: ID
+  content: String
+  accountid: ID
+  status: Boolean
+  sent: Boolean
+  enqueued: Boolean
+  queue: [Dispatch]
+}
+
+type Dispatch {
+  _id: ID
+  to: ID
+  messageid: ID
+  sent: Boolean
+  sentAt: String
+}
+
+type Query {
+  currentUser: User
+  account(_id: ID!): TelegramAccount
+}
+
+input TelegramAccountInput {
+  name: String!
+  api_id: String!
+  api_hash: String!
+  phone: String!
+}
+
+input DispatchInput {
+  ids: [ID]!
+  message: String!
+  account: ID!
+}
+
+input ValidateCodeInput {
+  api_id: String!
+  api_hash: String!
+  phone: String!
+  code: Int!
+}
+
+type Mutation {
+  enqueueMessage(dispatch: DispatchInput!): Message
+  createTelegramAccount(account: TelegramAccountInput!): User
+  validateCode(account: ValidateCodeInput!): User
+}
