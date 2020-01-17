@@ -62,7 +62,12 @@ export default {
     messages: ({ _id }, args, ctx) => Messages.find({ accountid: _id }).fetch()
   },
   Message: {
-    queue: ({ _id }, args, ctx) => Queue.find({ messageid: _id }).fetch()
+    queue: ({ _id }, args, ctx) => Queue.find({ messageid: _id }).fetch(),
+    sent: ({ _id }, args, ctx) => {
+      const queue = Queue.find({ messageid: _id }).fetch();
+      const sent = queue.filter(({ sent }) => sent);
+      return queue.length == sent.length;
+    }
   },
   Profile: {
     role: (obj, args, { user }) =>
