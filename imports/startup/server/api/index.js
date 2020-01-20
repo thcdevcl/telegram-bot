@@ -9,12 +9,11 @@ import TelethonAPI from "../../../api/data-sources/telethonapi";
 import UserSchema from "../../../api/users/User.graphql";
 import UserResolvers from "../../../api/users/resolvers";
 
-import GroupSchema from "../../../api/groups/Group.graphql";
-import GroupResolvers from "../../../api/groups/resolvers";
+import "../../../api/messages";
 
-const typeDefs = [UserSchema, GroupSchema];
+const typeDefs = [UserSchema];
 
-const resolvers = merge(UserResolvers, GroupResolvers);
+const resolvers = merge(UserResolvers);
 
 const server = new ApolloServer({
   typeDefs,

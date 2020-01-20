@@ -1,89 +1,112 @@
-import Groups from "../groups/Groups";
+import Messages from "../messages/Messages";
+import Queue from "../dispatch-queue/Queue";
+import Profiles from "../profiles/Profiles";
+import TelegramAccounts from "../telegram-accounts/TelegramAccounts";
 
 export default {
   User: {
-    profile: (obj, args, { user }) => user.profile
+    accounts: ({ _id }, args, ctx) =>
+      TelegramAccounts.find({ owner: _id }).fetch(),
+    profile: ({ _id }, args, ctx) => Profiles.findOne({ owner: _id })
   },
-  Client: {
-    groups: async (obj, args, { dataSources, user }) => {
-      const { api_hash, api_id, session_string } = user.profile.app;
-      const groups = await dataSources.TelethonAPI.getDialogs(
-        api_hash,
+  TelegramAccount: {
+    groups: async (
+      { api_id, api_hash, session_string },
+      args,
+      { user, dataSources }
+    ) => {
+      const { data } = await dataSources.TelethonAPI.getDialogs(
         api_id,
-        session_string,
-        user._id
+        api_hash,
+        session_string
       );
-      const customGroups = Groups.find({ owner: user._id }).fetch();
-      return groups.concat(customGroups);
+      let groups = [];
+      // filter restricted/invalid channels, groups and megagroups
+      for (let index in data) {
+        try {
+          const res = await dataSources.TelethonAPI.getParticipants(
+            data[index].id,
+            api_id,
+            api_hash,
+            session_string
+          );
+          if (res.statusCode == 200)
+            groups.push({
+              ...data[index],
+              participantids: res.data.map(({ id }) => id)
+            });
+        } catch (e) {}
+      }
+      return groups;
     },
-    groupCount: async (obj, args, { user, dataSources }) => {
-      const res = await dataSources.TelethonAPI.getDialogs();
-      return {
-        telegram: res.length,
-        custom: Groups.find({ owner: user._id }).fetch().length
-      };
+    telethon: async (
+      { api_id, api_hash, session_string },
+      args,
+      { user, dataSources }
+    ) => {
+      if (session_string) {
+        const res = await dataSources.TelethonAPI.checkClient(
+          api_id,
+          api_hash,
+          session_string,
+          user._id
+        );
+        const { authorized, connected } = res.data;
+        return {
+          authorized,
+          connected
+        };
+      }
+      return { authorized: false, connected: false };
+    },
+    messages: ({ _id }, args, ctx) =>
+      Messages.find({ accountid: _id }, { sort: { createdAt: -1 } }).fetch()
+  },
+  Message: {
+    queue: ({ _id }, args, ctx) => Queue.find({ messageid: _id }).fetch(),
+    sent: ({ _id }, args, ctx) => {
+      const queue = Queue.find({ messageid: _id }).fetch();
+      const sent = queue.filter(({ sent }) => sent);
+      return queue.length == sent.length;
     }
+  },
+  Profile: {
+    role: (obj, args, { user }) =>
+      Meteor.roleAssignment
+        .find({ "user._id": user._id })
+        .fetch()
+        .pop().role._id
   },
   Query: {
     currentUser: (obj, arg, { user }) => user,
-    checkClient: async (obj, args, { dataSources, user }) => {
-      const { api_id, api_hash, session_string } = user.profile.app;
-      return session_string
-        ? await dataSources.TelethonAPI.checkClient(
-            api_id,
-            api_hash,
-            session_string,
-            user._id
-          )
-        : { connected: false, authorized: false };
-    },
-    customGroups: (obj, args, { user }) =>
-      Groups.find({ owner: user._id }).fetch()
+    account: (obj, { _id }, { user }) => TelegramAccounts.findOne({ _id })
   },
   Mutation: {
-    connectClient: async (obj, args, { dataSources }) =>
-      await dataSources.TelethonAPI.connectClient(),
-    sendCode: async (obj, args, { dataSources }) => {
-      await dataSources.TelethonAPI.sendCode();
-      return { connected: true };
-    },
-    validateCode: async (obj, { code }, { dataSources, user }) => {
-      const { phone } = user.profile.app;
-      const res = await dataSources.TelethonAPI.verifyCode(
-        code,
-        phone,
-        user._id
-      );
-      return { connected: true };
-    },
-    sendBulkMessage: async (obj, { bulk }, { dataSources }) => {
-      const { ids, message } = bulk;
-      ids.forEach(
-        async id =>
-          await dataSources.TelethonAPI.sendMessage({
-            to: parseInt(id),
-            message
-          })
-      );
-      return { sent: true };
-    },
-    setProfileApp: async (obj, { app }, { user, dataSources }) => {
-      const { api_id, api_hash, phone } = app;
+    enqueueMessage: async (obj, { dispatch }, { dataSources, user }) =>
+      Meteor.call("messages.enqueue", { ...dispatch, from: user._id }),
+    createTelegramAccount: async (obj, { account }, { user, dataSources }) => {
       const res = await dataSources.TelethonAPI.signinClient(
-        api_id,
-        api_hash,
-        phone,
+        account.api_id,
+        account.api_hash,
+        account.phone,
         user._id
       );
-      console.log(res);
-      return Meteor.users.update(
-        { _id: user._id },
-        {
-          $set: {
-            "profile.app": { ...app, session_string: res.session_string }
-          }
-        }
+      const _id = TelegramAccounts.insert({
+        ...account,
+        owner: user._id,
+        session_string: res.data.session_string
+      });
+      return user;
+    },
+    validateCode: async (obj, { account }, { dataSources, user }) => {
+      const res = await dataSources.TelethonAPI.signinClient(
+        account.api_id,
+        account.api_hash,
+        account.phone,
+        user._id,
+        account.code
       );
+      return user;
     }
   }
 };

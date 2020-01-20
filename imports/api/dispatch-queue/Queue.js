@@ -1,56 +1,61 @@
 import { Mongo } from "meteor/mongo";
 import SimpleSchema from "simpl-schema";
 
-const Groups = new Mongo.Collection("groups");
+const Queue = new Mongo.Collection("queue");
 
-Groups.allow({
+Queue.allow({
   insert: () => false,
   update: () => false,
   remove: () => false
 });
 
-Groups.deny({
+Queue.deny({
   insert: () => true,
   update: () => true,
   remove: () => true
 });
 
-Groups.schema = new SimpleSchema({
-  status: {
+Queue.schema = new SimpleSchema({
+  messageid: {
+    type: String,
+    optional: false,
+    label: "message _id"
+  },
+  sent: {
     type: Boolean,
     autoValue() {
-      if (this.isInsert) return true;
-    },
-    label: "Deleted or not."
+      if (this.isInsert) return false;
+    }
+  },
+  sentAt: {
+    type: String,
+    label: "The date this message was sent.",
+    autoValue() {
+      if (this.isInsert) return "";
+    }
   },
   createdAt: {
     type: String,
-    label: "The date this group was created.",
+    label: "The date this document was created.",
     autoValue() {
       if (this.isInsert) return new Date().toISOString();
     }
   },
   updatedAt: {
     type: String,
-    label: "The date this group was last updated.",
+    label: "The date this document was last updated.",
     optional: false,
     autoValue() {
       if (this.isInsert || this.isUpdate) return new Date().toISOString();
     }
   },
-  owner: {
+  to: {
     type: String,
     optional: false,
-    label: "_id of user that created this group."
-  },
-  title: {
-    type: String,
-    optional: false,
-    label: "Group title."
-  },
-  participantids: [String]
+    label: "telegram user id"
+  }
 });
 
-Groups.attachSchema(Groups.schema);
+Queue.attachSchema(Queue.schema);
 
-export default Groups;
+export default Queue;

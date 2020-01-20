@@ -12,9 +12,9 @@ import Notify from "../../../../modules/notification";
 import Spinner from "../../utils/Spinner";
 
 const VALIDATE_CODE = gql`
-  mutation validateCode($code: Int!) {
-    validateCode(code: $code) {
-      connected
+  mutation validateCode($account: ValidateCodeInput!) {
+    validateCode(account: $account) {
+      _id
     }
   }
 `;
@@ -23,26 +23,29 @@ const formSchema = Yup.object().shape({
   code: Yup.number().required("Required field")
 });
 
-export default () => (
+export default ({ api_id, api_hash, phone, refetch }) => (
   <Mutation mutation={VALIDATE_CODE}>
     {(validateCode, { error, loading }) => {
-      const history = useHistory();
       return (
         <Formik
           initialValues={{ code: "" }}
           formSchema={formSchema}
           onSubmit={({ code }, { setSubmitting }) => {
             setSubmitting(true);
-            validateCode({ variables: { code } })
+            validateCode({
+              variables: {
+                account: { api_id: `${api_id}`, api_hash, phone, code }
+              }
+            })
               .then(() => {
                 Notify({
                   message:
                     Meteor.settings.public.forms.telethon.validate_code
                       .notifications.messages.CODE_OK
                 });
-                history.push("/");
                 setSubmitting(loading);
               })
+              .then(refetch())
               .catch(error => Notify({ error }));
           }}
         >
@@ -56,7 +59,7 @@ export default () => (
                     value={code}
                     onChange={handleChange}
                     id="code"
-                    placeholder="Code"
+                    placeholder="Enter code sent"
                     type="number"
                     margin="dense"
                     required

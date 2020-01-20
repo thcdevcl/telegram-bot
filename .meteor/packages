@@ -22,4 +22,6 @@ swydo:ddp-apollo
 swydo:graphql
 accounts-password
 aldeed:collection2-core@2.0.0
-http
+msavin:sjobs
+http@1.4.2
+alanning:roles
