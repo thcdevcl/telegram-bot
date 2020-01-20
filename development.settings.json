@@ -151,7 +151,7 @@
   "private": {
     "services": {
       "telethon_api": {
-        "BASE_URL": "http://127.0.0.1:8000/"
+        "BASE_URL": "https://hidden-wave-94806.herokuapp.com/"
       },
       "telegram_bot_api": {
         "BASE_URL": "https://api.telegram.org/bot970344270:AAHrjvY3y13TGGVbqq8ab_mbRA_l3xjiJiA/"
