@@ -10,6 +10,7 @@ import UserSchema from "../../../api/users/User.graphql";
 import UserResolvers from "../../../api/users/resolvers";
 
 import "../../../api/messages";
+import "../../../api/dispatch-queue";
 
 const typeDefs = [UserSchema];
 

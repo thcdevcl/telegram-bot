@@ -1,8 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 
-import { Jobs } from "meteor/msavin:sjobs";
-
 import "./accounts";
 import "./api";
 
@@ -19,20 +17,4 @@ Meteor.startup(() => {
       }
     });
   }
-
-  Jobs.configure({
-    autoStart: false,
-    interval: 1000
-  });
-
-  Jobs.register({
-    dispatch: function() {
-      const instance = this;
-      const res = Meteor.call("messages.dispatch");
-      instance.replicate({ in: { seconds: 1 } });
-      if (res) instance.success(res);
-    }
-  });
-
-  Jobs.run("dispatch");
 });
