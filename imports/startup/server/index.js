@@ -17,4 +17,12 @@ Meteor.startup(() => {
       }
     });
   }
+  const jobs = JobCollection("dispatchJob");
+  jobs.allow({
+    // Grant full permission to any authenticated user
+    admin: function(userId, method, params) {
+      return userId ? true : false;
+    }
+  });
+  return jobs.startJobServer();
 });
