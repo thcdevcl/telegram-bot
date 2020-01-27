@@ -8,7 +8,7 @@ Meteor.methods({
       { messageid: _id, sent: false },
       { sort: { createdAt: -1 } }
     );
-    console.log(queue);
+    console.log(dispatch);
     return true;
   }
 });

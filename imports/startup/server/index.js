@@ -3,15 +3,7 @@ import { Accounts } from "meteor/accounts-base";
 
 import "./accounts";
 import "./api";
-
-export const jobs = JobCollection("sendMessage");
-
-jobs.allow({
-  // Grant full permission to any authenticated user
-  admin: function(userId, method, params) {
-    return userId ? true : false;
-  }
-});
+import sendMessageJobs from "./jobs";
 
 Meteor.startup(() => {
   console.log("server started");
@@ -27,10 +19,7 @@ Meteor.startup(() => {
     });
   }
   Meteor.publish("allJobs", function() {
-    return jobs.find({});
+    return sendMessageJobs.find({});
   });
-  Job.processJobs("sendMessage", "dispatchQueue", function(job, cb) {
-    console.log(job);
-  });
-  return jobs.startJobServer();
+  return sendMessageJobs.startJobServer();
 });

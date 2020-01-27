@@ -22,6 +22,7 @@ Meteor.methods({
   "messages.send"(_id) {
     const job = new Job("sendMessage", "dispatchQueue", { messageid: _id });
     job.priority("normal").save();
+    // repeat job every sec
     return job ? true : false;
   }
 });
