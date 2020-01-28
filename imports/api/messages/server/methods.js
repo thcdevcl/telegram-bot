@@ -24,7 +24,7 @@ Meteor.methods({
     job
       .priority("normal")
       .repeat({
-        repeats,
+        repeats: repeats - 1,
         wait: 100
       })
       .save();

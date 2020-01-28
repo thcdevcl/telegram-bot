@@ -13,10 +13,11 @@ Job.processJobs("sendMessage", "dispatchQueue", function(job, cb) {
   const message = Messages.findOne({ _id: job.data.messageid });
   if (message.status) {
     job.done("done", { repeatId: true }, function(err, newid) {
-      Meteor.call("queue.dispatch", job.data.messageid);
+      const dispatched = Meteor.call("queue.dispatch", job.data.messageid);
+      if (!dispatched) job.fail("Some error happened...");
+      cb();
     });
   }
-  cb();
 });
 
 export default jobs;
