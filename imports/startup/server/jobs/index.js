@@ -1,3 +1,5 @@
+import Messages from "../../../api/messages/Messages";
+
 const jobs = JobCollection("sendMessage");
 
 jobs.allow({
@@ -9,8 +11,12 @@ jobs.allow({
 
 Job.processJobs("sendMessage", "dispatchQueue", function(job, cb) {
   const message = Messages.findOne({ _id: job.data.messageid });
-  const sent = Meteor.call("queue.dispatch", job.data.messageid);
-  // check if job done
+  if (message.status) {
+    job.done("done", { repeatId: true }, function(err, newid) {
+      Meteor.call("queue.dispatch", job.data.messageid);
+    });
+  }
+  cb();
 });
 
 export default jobs;

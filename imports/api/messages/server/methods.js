@@ -14,15 +14,23 @@ Meteor.methods({
       DispatchQueue.insert({ to: id, messageid: _id })
     );
     if (_ids.length == ids.length) {
-      const enqueued = Meteor.call("messages.send", _id);
+      const enqueued = Meteor.call("messages.send", _id, _ids.length);
       return { enqueued };
     }
     throw new Error();
   },
-  "messages.send"(_id) {
+  "messages.send"(_id, repeats) {
     const job = new Job("sendMessage", "dispatchQueue", { messageid: _id });
-    job.priority("normal").save();
-    // repeat job every sec
+    job
+      .priority("normal")
+      .repeat({
+        repeats,
+        wait: 100
+      })
+      .save();
     return job ? true : false;
+  },
+  "messages.close"(_id) {
+    Messages.update(_id, { $set: { sent: true, status: false } });
   }
 });

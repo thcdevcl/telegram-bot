@@ -24,29 +24,6 @@ const useStyles = makeStyles(theme => ({
   selectedBackground: { background: theme.palette.grey[300] }
 }));
 
-const GET_ACCOUNT_MESSAGES = gql`
-  query account($_id: ID!) {
-    account(_id: $_id) {
-      _id
-      name
-      messages {
-        _id
-        createdAt
-        content
-        status
-        sent
-        queue {
-          _id
-          to
-          messageid
-          sent
-          sentAt
-        }
-      }
-    }
-  }
-`;
-
 function MessageQueueGrid({ messages }) {
   const classes = useStyles();
   const theme = useTheme();
@@ -131,13 +108,36 @@ function MessageQueueGrid({ messages }) {
   );
 }
 
+const GET_ACCOUNT_MESSAGES = gql`
+  query account($_id: ID!) {
+    account(_id: $_id) {
+      _id
+      name
+      messages {
+        _id
+        createdAt
+        content
+        status
+        sent
+        queue {
+          _id
+          to
+          messageid
+          sent
+          sentAt
+        }
+      }
+    }
+  }
+`;
+
 export default ({ accountid }) => {
   return (
     <Query
       query={GET_ACCOUNT_MESSAGES}
       variables={{ _id: accountid }}
       fetchPolicy="network-only"
-      pollInterval={1500}
+      pollInterval={250}
     >
       {({ loading, error, data }) => {
         if (loading) return <Spinner />;

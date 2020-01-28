@@ -8,7 +8,15 @@ Meteor.methods({
       { messageid: _id, sent: false },
       { sort: { createdAt: -1 } }
     );
-    console.log(dispatch);
+    // CALL TELETONAPI
+    Queue.update(dispatch._id, {
+      $set: { sentAt: new Date().toISOString(), sent: true }
+    });
+    const remaining = Queue.find(
+      { messageid: _id, sent: false },
+      { sort: { createdAt: -1 } }
+    ).fetch().length;
+    if (remaining == 0) Meteor.call("messages.close", _id);
     return true;
   }
 });
