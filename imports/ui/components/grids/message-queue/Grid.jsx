@@ -20,6 +20,8 @@ import { useTheme } from "@material-ui/core/styles";
 
 import Spinner from "../../utils/Spinner";
 
+import ToggleMessageStatus from "../../buttons/ToggleMessageStatusButton";
+
 const useStyles = makeStyles(theme => ({
   selectedBackground: { background: theme.palette.grey[300] }
 }));
@@ -53,7 +55,7 @@ function MessageQueueGrid({ messages }) {
             .filter(message =>
               selected && matches ? message._id == selected : message
             )
-            .map(({ _id, content, sent, createdAt }) => (
+            .map(({ _id, content, sent, createdAt, status }) => (
               <Grid
                 item
                 xs={12}
@@ -73,6 +75,11 @@ function MessageQueueGrid({ messages }) {
                 <Typography variant="caption">Created: {createdAt}</Typography>
                 <Typography variant="body1">Sent:{sent.toString()}</Typography>
                 <Typography variant="body2">Content: {content}</Typography>
+                <ToggleMessageStatus
+                  status={status}
+                  sent={sent}
+                  messageid={_id}
+                />
               </Grid>
             ))}
         </Grid>

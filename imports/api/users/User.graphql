@@ -86,4 +86,5 @@ type Mutation {
   enqueueMessage(dispatch: DispatchInput!): Message
   createTelegramAccount(account: TelegramAccountInput!): User
   validateCode(account: ValidateCodeInput!): User
+  toggleMessageStatus(_id: ID!, status: Boolean!): Message
 }

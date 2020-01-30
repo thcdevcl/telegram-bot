@@ -61,6 +61,11 @@ Messages.schema = new SimpleSchema({
     type: String,
     optional: false,
     label: "Telegram Account _id"
+  },
+  currentJob: {
+    type: String,
+    optional: true,
+    label: "current job _id"
   }
 });
 

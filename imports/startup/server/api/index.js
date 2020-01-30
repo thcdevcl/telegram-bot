@@ -9,8 +9,7 @@ import TelethonAPI from "../../../api/data-sources/telethonapi";
 import UserSchema from "../../../api/users/User.graphql";
 import UserResolvers from "../../../api/users/resolvers";
 
-import "../../../api/messages";
-import "../../../api/dispatch-queue";
+import "../../../api";
 
 const typeDefs = [UserSchema];
 

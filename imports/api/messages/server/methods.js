@@ -32,5 +32,10 @@ Meteor.methods({
   },
   "messages.close"(_id) {
     Messages.update(_id, { $set: { sent: true, status: false } });
+  },
+  "messages.toggleStatus"(_id, status) {
+    Meteor.call("jobs.togglePause", _id, status);
+    Messages.update(_id, { $set: { status } });
+    return true;
   }
 });

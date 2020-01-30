@@ -103,6 +103,9 @@ export default {
         account.code
       );
       return user;
+    },
+    toggleMessageStatus: (obj, { _id, status }, ctx) => {
+      return Meteor.call("messages.toggleStatus", _id, status);
     }
   }
 };

@@ -14,10 +14,14 @@ Job.processJobs("sendMessage", "dispatchQueue", function(job, cb) {
   if (message.status) {
     job.done("done", { repeatId: true }, function(err, newid) {
       const dispatched = Meteor.call("queue.dispatch", job.data.messageid);
-      if (!dispatched) job.fail("Some error happened...");
-      cb();
+      if (dispatched) {
+        Messages.update(job.data.messageid, { $set: { currentJob: newid } });
+      } else {
+        job.fail("Some error happened...");
+      }
     });
   }
+  cb();
 });
 
 export default jobs;
