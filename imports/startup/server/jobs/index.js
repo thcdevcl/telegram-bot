@@ -11,7 +11,8 @@ jobs.allow({
 
 Job.processJobs("sendMessage", "dispatchQueue", function(job, cb) {
   const message = Messages.findOne({ _id: job.data.messageid });
-  if (message.status) {
+  const isBlocked = !Meteor.call("users.checkLimit", message.owner);
+  if (message.status && !isBlocked) {
     job.done("done", { repeatId: true }, function(err, newid) {
       const dispatched = Meteor.call("queue.dispatch", job.data.messageid);
       if (dispatched) {
@@ -20,6 +21,9 @@ Job.processJobs("sendMessage", "dispatchQueue", function(job, cb) {
         job.fail("Some error happened...");
       }
     });
+  } else {
+    // Pause job
+    job.fail("Limit reached");
   }
   cb();
 });
