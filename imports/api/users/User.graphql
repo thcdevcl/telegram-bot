@@ -11,6 +11,7 @@ type Profile {
   fullName: String
   avatar: String
   limit: Int
+  limitReached: Boolean
 }
 
 type TelegramAccount {
